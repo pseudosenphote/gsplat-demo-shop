@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chronographe Automatique Élégance - Modèle Acier</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- CSS Intégré (Identique à la version précédente, sauf si des ajustements mineurs sont nécessaires pour le loading indicator) -->
+    <style>
+        :root {
+            --color-text: #333;
+            --color-text-muted: #6c757d;
+            --color-background: #fdfdfd;
+            --color-surface: #ffffff;
+            --color-surface-alt: #f8f9fa; /* Fond alternatif léger */
+            --color-border: #e9ecef;
+            --color-border-subtle: #f1f3f5; /* Encore plus subtil */
+            --color-primary: #a88e6b;
+            --color-primary-hover: #917956;
+            --color-dark: #212529;
+            --color-dark-hover: #343a40;
+            --font-primary: 'Lato', sans-serif;
+            --font-secondary: 'Playfair Display', serif;
+            --shadow-soft: 0 6px 18px rgba(0, 0, 0, 0.06); /* Ombre douce et diffuse */
+            --shadow-subtle: 0 2px 8px rgba(0, 0, 0, 0.05);
+            --border-radius: 3px; /* Rayon de bordure léger */
+            --transition-speed: 0.3s;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: var(--font-primary); line-height: 1.7; color: var(--color-text);
+            background-color: var(--color-background); font-weight: 400; font-size: 16px;
+            -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;
+        }
+
+        img { max-width: 100%; display: block; }
+        button, input, select { font-family: inherit; }
+        a { text-decoration: none; color: var(--color-primary); transition: color var(--transition-speed) ease; }
+        a:hover { color: var(--color-primary-hover); }
+        h1, h2, h3, h4, h5, h6 { font-family: var(--font-secondary); font-weight: 600; color: var(--color-dark); margin-bottom: 0.8em; line-height: 1.3; }
+
+        .container { max-width: 1360px; margin: 0 auto; padding: 0 30px; }
+        .visually-hidden {
+            position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0;
+            overflow: hidden; clip: rect(0, 0, 0, 0); border: 0; white-space: nowrap;
+        }
+
+        /* --- Header & Breadcrumbs --- */
+        .site-header { background-color: var(--color-surface); padding: 25px 0; border-bottom: 1px solid var(--color-border); margin-bottom: 40px; }
+        .site-header .container { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-family: var(--font-secondary); font-size: 1.9em; font-weight: 700; color: var(--color-dark); letter-spacing: 1.5px;}
+        .main-nav ul { list-style: none; display: flex; gap: 35px; }
+        .main-nav a { color: var(--color-text-muted); font-weight: 400; font-size: 0.9em; letter-spacing: 1px; text-transform: uppercase; transition: color var(--transition-speed) ease;}
+        .main-nav a:hover { color: var(--color-dark); }
+
+        .breadcrumbs { padding: 25px 0; font-size: 0.85em; color: var(--color-text-muted); }
+        .breadcrumbs ol { list-style: none; display: flex; flex-wrap: wrap; gap: 8px 12px; }
+        .breadcrumbs li:not(:last-child)::after { content: '/'; margin-left: 12px; color: #ccc; }
+        .breadcrumbs a { color: var(--color-text-muted); transition: color var(--transition-speed) ease; }
+        .breadcrumbs a:hover { color: var(--color-primary); }
+
+        /* --- Grille Page Produit --- */
+        .product-page-grid {
+            display: grid; grid-template-columns: repeat(2, 1fr); gap: 70px;
+            background-color: var(--color-surface); padding: 60px; border-radius: var(--border-radius);
+            box-shadow: var(--shadow-soft); margin-bottom: 60px;
+        }
+
+        /* --- Section Média & Carrousel --- */
+        .product-media { display: flex; flex-direction: column; }
+        .carousel { position: relative; overflow: hidden; border-radius: var(--border-radius); background-color: var(--color-surface-alt); aspect-ratio: 1 / 1; margin-bottom: 25px; border: 1px solid var(--color-border-subtle); }
+        .carousel-slides { display: flex; height: 100%; }
+        .carousel-slide { min-width: 100%; height: 100%; position: relative; flex-shrink: 0; display: flex; align-items: center; justify-content: center; opacity: 0; visibility: hidden; transition: opacity 0.6s ease-in-out, visibility 0s linear 0.6s; position: absolute; top: 0; left: 0; width: 100%; }
+        .carousel-slide.active { opacity: 1; visibility: visible; transition: opacity 0.6s ease-in-out; z-index: 1; }
+        .carousel-slide iframe, .carousel-slide img { display: block; width: 100%; height: 100%; object-fit: contain; border: none; background-color: transparent; }
+        .carousel-slide img { background-color: var(--color-surface-alt); }
+
+        /* Loading indicator spécifique au splat */
+        .carousel-slide[data-type="splat"] .loading-indicator {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            background-color: rgba(0, 0, 0, 0.7); color: white; padding: 10px 20px;
+            border-radius: var(--border-radius); z-index: 5;
+            /* Changé : display none par défaut, géré par JS */
+            opacity: 0; display: none;
+            transition: opacity var(--transition-speed) ease;
+            font-size: 0.85em; font-weight: 400;
+            pointer-events: none; /* Ne pas interférer avec l'iframe */
+        }
+        /* Style quand visible (ajouté par JS) */
+        .carousel-slide[data-type="splat"] .loading-indicator.visible {
+             display: block;
+             opacity: 1;
+        }
+         /* Masqué quand l'iframe est chargé (classe ajoutée par JS sur l'iframe) */
+        .carousel-slide[data-type="splat"] iframe.loaded + .loading-indicator {
+             opacity: 0;
+             /* On peut laisser display block et juste jouer sur l'opacité */
+             /* Ou transitionner display : none après la fin de la transition d'opacité */
+             transition: opacity var(--transition-speed) ease, display 0s linear var(--transition-speed);
+             display: none;
+        }
+
+
+        /* Contrôles Carrousel (CSS corrigé précédemment) */
+        .carousel-control { position: absolute; top: 50%; transform: translateY(-50%); background-color: rgba(255, 255, 255, 0.8); color: var(--color-dark); border: none; padding: 0; font-size: 16px; cursor: pointer; border-radius: 50%; width: 42px; height: 42px; display: flex; align-items: center; justify-content: center; z-index: 10; opacity: 0; pointer-events: none; transition: opacity var(--transition-speed) ease, background-color var(--transition-speed) ease, box-shadow var(--transition-speed) ease, transform var(--transition-speed) ease; box-shadow: var(--shadow-subtle); }
+        .carousel:hover .carousel-control { opacity: 1; pointer-events: auto; }
+        .carousel:hover .carousel-control:not(:disabled):hover { background-color: var(--color-surface); box-shadow: 0 4px 10px rgba(0,0,0,0.1); transform: translateY(-50%) scale(1.05); }
+        .carousel:hover .carousel-control:disabled { opacity: 0.4; cursor: default; pointer-events: none; background-color: rgba(230, 230, 230, 0.7); box-shadow: none; transform: translateY(-50%) scale(1); }
+        .carousel-control.prev { left: 20px; } .carousel-control.next { right: 20px; }
+        .carousel-control i { line-height: 1; }
+
+        /* Miniatures */
+        .carousel-thumbnails { display: grid; grid-template-columns: repeat(auto-fill, minmax(75px, 1fr)); gap: 15px; }
+        .thumbnail-item { width: 100%; aspect-ratio: 1 / 1; cursor: pointer; border: 1px solid var(--color-border-subtle); border-radius: var(--border-radius); overflow: hidden; opacity: 0.85; transition: all var(--transition-speed) ease; display: flex; align-items: center; justify-content: center; background-color: var(--color-surface-alt); position: relative; }
+        .thumbnail-item:hover { opacity: 1; border-color: var(--color-text-muted); transform: scale(1.03); }
+        .thumbnail-item.active { opacity: 1; border-color: var(--color-primary); box-shadow: 0 0 0 2px var(--color-primary); transform: scale(1.03); }
+        .thumbnail-item img { width: 100%; height: 100%; object-fit: cover; }
+        .thumbnail-item[data-type="splat"] { font-size: 10px; font-weight: 600; text-align: center; color: var(--color-primary); background-color: #f8f0e3; padding: 5px; line-height: 1.2; border: 1px solid var(--color-primary); }
+        .thumbnail-item[data-type="splat"].active { border-color: var(--color-primary); background-color: #efe2cc; box-shadow: 0 0 0 2px var(--color-primary); }
+        .thumbnail-item[data-type="splat"] i { font-size: 1.8em; margin-bottom: 4px; display: block; color: var(--color-primary); }
+
+        /* --- Section Infos Produit (Espacement réduit) --- */
+        .product-info { display: flex; flex-direction: column; gap: 18px; }
+        .product-vendor { font-size: 0.85em; color: var(--color-text-muted); text-transform: uppercase; letter-spacing: 1px;}
+        .product-vendor a { color: var(--color-text-muted); font-weight: 400; }
+        .product-vendor a:hover { color: var(--color-primary); }
+        .product-title { font-size: 2.6em; font-weight: 600; line-height: 1.25; color: var(--color-dark); margin-bottom: 0px; }
+        .product-rating { display: flex; align-items: center; gap: 12px; font-size: 0.9em; margin-top: -5px; }
+        .stars { color: var(--color-primary); } .stars .fa-regular { color: #e0e0e0; }
+        .review-count { color: var(--color-text-muted); } .review-count:hover { color: var(--color-primary); }
+        .product-price-wrapper { margin: 5px 0; border-top: 1px solid var(--color-border-subtle); border-bottom: 1px solid var(--color-border-subtle); padding: 18px 0; }
+        .product-price { font-family: var(--font-primary); font-size: 2.1em; font-weight: 400; color: var(--color-dark); display: flex; align-items: center; gap: 15px; }
+        .original-price { font-size: 0.6em; text-decoration: line-through; color: var(--color-text-muted); font-weight: 300;}
+        .product-variants { display: flex; flex-direction: column; gap: 18px; margin-top: 5px; }
+        .variant-group { display: flex; flex-direction: column; gap: 10px; }
+        .variant-label { font-family: var(--font-primary); font-weight: 700; font-size: 0.85em; color: var(--color-dark); margin-bottom: 3px; text-transform: uppercase; letter-spacing: 1px;}
+        .selected-value { font-weight: 400; color: var(--color-text-muted); text-transform: none; letter-spacing: 0; font-size: 0.95em; }
+        .color-swatches { display: flex; flex-wrap: wrap; gap: 12px; }
+        .swatch { width: 32px; height: 32px; border-radius: 50%; background-color: var(--swatch-color, #eee); cursor: pointer; border: 1px solid var(--color-border); transition: all var(--transition-speed) ease; position: relative; display: flex; align-items: center; justify-content: center; }
+        .swatch:hover { transform: scale(1.1); box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+        .swatch.active { border-color: var(--color-primary); box-shadow: 0 0 0 2px var(--color-primary); }
+        .swatch[style*="#ffffff"] { border-color: #ddd; }
+        .swatch[style*="#ffffff"].active { border-color: var(--color-primary); }
+        .swatch[data-value="Acier Inoxydable"] { --swatch-color: #d8d8d8; }
+        .swatch[data-value="Or Jaune"] { --swatch-color: #e7c57d; }
+        .swatch[data-value="Or Rose"] { --swatch-color: #d9a7a0; }
+        .swatch[data-value="Cadran Bleu"] { --swatch-color: #2a4a6d; }
+        .product-quantity { margin-top: 10px; }
+        .quantity-selector { display: flex; align-items: center; gap: 0; border: 1px solid var(--color-border); border-radius: var(--border-radius); overflow: hidden; width: fit-content;}
+        .quantity-selector button { background-color: var(--color-surface-alt); border: none; width: 40px; height: 40px; font-size: 1em; color: var(--color-text-muted); cursor: pointer; transition: background-color var(--transition-speed); line-height: 1; }
+        .quantity-selector button:hover:not(:disabled) { background-color: #e9ecef; }
+        .quantity-selector button:disabled { background-color: var(--color-surface-alt); color: #ccc; cursor: not-allowed; }
+        .quantity-selector input[type="number"] { width: 55px; height: 40px; text-align: center; border: none; border-left: 1px solid var(--color-border); border-right: 1px solid var(--color-border); font-size: 1em; padding: 0 5px; color: var(--color-dark); background-color: var(--color-surface); -moz-appearance: textfield; }
+        .quantity-selector input[type=number]::-webkit-outer-spin-button,
+        .quantity-selector input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+        .product-actions { display: flex; flex-direction: column; gap: 15px; margin-top: 20px; }
+        .action-button { display: flex; align-items: center; justify-content: center; gap: 12px; padding: 16px 35px; font-size: 0.95em; font-weight: 700; border-radius: var(--border-radius); cursor: pointer; transition: all var(--transition-speed) ease; border: 1px solid transparent; text-transform: uppercase; letter-spacing: 1.2px; }
+        .add-to-cart-btn { background-color: var(--color-dark); color: white; border-color: var(--color-dark); }
+        .add-to-cart-btn:hover { background-color: var(--color-dark-hover); border-color: var(--color-dark-hover); transform: translateY(-2px); box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); }
+        .wishlist-btn { background-color: transparent; color: var(--color-dark); border: 1px solid var(--color-border); }
+        .wishlist-btn:hover { background-color: var(--color-surface-alt); border-color: #ced4da; color: var(--color-primary); }
+        .wishlist-btn .fa-gem { margin-right: 5px; }
+        .trust-info, .social-share { margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--color-border-subtle); }
+        .trust-info { display: flex; flex-wrap: wrap; gap: 15px 25px; font-size: 0.8em; color: var(--color-text-muted); text-transform: uppercase; letter-spacing: 0.8px; }
+        .trust-item { display: flex; align-items: center; gap: 10px; }
+        .trust-item i { color: var(--color-primary); font-size: 1.3em; width: 20px; text-align: center; }
+        .social-share p { font-weight: 700; margin-bottom: 15px; font-size: 0.8em; text-transform: uppercase; letter-spacing: 1px; color: var(--color-dark); }
+        .social-links { display: flex; gap: 15px; }
+        .social-links a { color: var(--color-text-muted); background-color: transparent; border: 1px solid var(--color-border); width: 38px; height: 38px; display: inline-flex; align-items: center; justify-content: center; border-radius: 50%; font-size: 1.05em; transition: all var(--transition-speed) ease; }
+        .social-links a:hover { background-color: var(--color-primary); color: white; border-color: var(--color-primary); transform: translateY(-2px); box-shadow: var(--shadow-subtle); }
+
+        /* --- Onglets Détails Produit --- */
+        .product-details-section { background-color: var(--color-surface); padding: 50px 60px; border-radius: var(--border-radius); box-shadow: var(--shadow-soft); margin-bottom: 60px; }
+        .tabs-nav { display: flex; border-bottom: 1px solid var(--color-border); margin-bottom: 35px; gap: 15px;}
+        .tab-button { padding: 18px 30px; border: none; background-color: transparent; cursor: pointer; font-size: 0.95em; font-weight: 700; color: var(--color-text-muted); position: relative; border-bottom: 3px solid transparent; transition: all var(--transition-speed) ease; text-transform: uppercase; letter-spacing: 1px; }
+        .tab-button:hover { color: var(--color-dark); }
+        .tab-button.active { color: var(--color-primary); border-bottom-color: var(--color-primary); }
+        .tab-content { display: none; animation: fadeIn 0.7s ease; }
+        .tab-content.active { display: block; }
+        .tab-content h3 { font-size: 1.7em; margin-bottom: 25px; font-weight: 600; }
+        .tab-content p, .tab-content ul { margin-bottom: 25px; color: var(--color-text); line-height: 1.8;}
+        .tab-content ul { list-style: none; padding-left: 0; }
+        .tab-content li { padding-left: 30px; position: relative; margin-bottom: 12px; }
+        .tab-content li::before { content: "\f00c"; font-family: 'Font Awesome 6 Free'; font-weight: 900; position: absolute; left: 0; top: 5px; color: var(--color-primary); font-size: 0.9em; }
+        .tab-content strong { font-weight: 700; color: var(--color-dark); }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* --- Section Produits Connexes --- */
+        .related-products-section { margin-bottom: 60px; padding: 50px 0; background-color: var(--color-surface-alt); border-top: 1px solid var(--color-border-subtle); border-bottom: 1px solid var(--color-border-subtle); }
+        .related-products-section h2 { font-size: 2.2em; font-weight: 600; margin-bottom: 45px; text-align: center; letter-spacing: 1.5px; }
+        .related-products-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 35px; }
+        .related-product-card { display: block; background-color: var(--color-surface); border-radius: var(--border-radius); overflow: hidden; border: 1px solid var(--color-border-subtle); transition: border-color var(--transition-speed) ease, box-shadow var(--transition-speed) ease; text-align: center; position: relative; }
+        .related-product-card:hover { border-color: var(--color-primary); box-shadow: var(--shadow-soft); }
+        .related-product-card .image-container { background-color: var(--color-surface-alt); padding: 20px; border-bottom: 1px solid var(--color-border-subtle); position: relative; overflow: hidden; }
+        .related-product-card img { width: 100%; aspect-ratio: 1 / 1; object-fit: contain; transition: transform 0.4s ease; }
+        .related-product-card:hover img { transform: scale(1.05); }
+        .related-product-info { padding: 25px 20px; }
+        .related-product-title { font-family: var(--font-secondary); font-size: 1.1em; font-weight: 600; color: var(--color-dark); margin-bottom: 10px; line-height: 1.4; height: 2.8em; overflow: hidden; }
+        .related-product-price { font-size: 1.15em; font-weight: 400; color: var(--color-dark); margin-bottom: 15px; }
+        .view-details-link { display: inline-block; font-size: 0.8em; color: var(--color-primary); font-weight: 700; text-transform: uppercase; letter-spacing: 1px; opacity: 0; transform: translateY(5px); transition: opacity var(--transition-speed) ease, transform var(--transition-speed) ease; padding-top: 10px; }
+        .related-product-card:hover .view-details-link { opacity: 1; transform: translateY(0); }
+
+        /* --- Footer --- */
+        .site-footer { background-color: var(--color-dark); color: #adb5bd; padding: 70px 0; font-size: 0.9em; margin-top: 60px; }
+        .footer-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 45px; margin-bottom: 50px;}
+        .footer-column h4 { font-family: var(--font-primary); font-size: 0.95em; color: #fff; margin-bottom: 25px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px;}
+        .footer-column ul { list-style: none; }
+        .footer-column li { margin-bottom: 14px; }
+        .footer-column a { color: #adb5bd; transition: color var(--transition-speed) ease; }
+        .footer-column a:hover { color: #fff; }
+        .footer-bottom { text-align: center; border-top: 1px solid #495057; padding-top: 35px; font-size: 0.85em; color: #6c757d;}
+
+        /* --- Responsive --- */
+        @media (max-width: 1200px) { .related-products-grid { grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); } }
+        @media (max-width: 1024px) { .product-page-grid { grid-template-columns: 1fr; gap: 50px; padding: 50px; } .product-title { font-size: 2.2em; } .product-price { font-size: 1.9em; } }
+        @media (max-width: 768px) { .container { padding: 0 20px; } .site-header { padding: 20px 0;} .site-header .container { flex-direction: column; gap: 20px; } .main-nav ul { gap: 25px; } .product-page-grid { padding: 35px; gap: 35px;} .product-title { font-size: 2em; } .product-price { font-size: 1.7em; } .action-button { padding: 15px 28px; font-size: 0.9em; } .carousel-control { width: 38px; height: 38px; font-size: 15px; } .carousel-control.prev { left: 15px; } .carousel-control.next { right: 15px; } .carousel-thumbnails { gap: 12px; grid-template-columns: repeat(auto-fill, minmax(65px, 1fr)); } .tabs-nav { gap: 10px; } .tab-button { font-size: 0.9em; padding: 15px 20px; } .product-details-section { padding: 40px 30px; } .related-products-grid { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 25px; } .footer-grid { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 35px; } }
+        @media (max-width: 480px) { .container { padding: 0 15px; } .logo { font-size: 1.7em; } .product-page-grid { padding: 25px; gap: 30px;} .product-title { font-size: 1.7em; } .product-price { font-size: 1.6em; } .swatch { width: 32px; height: 32px; } .quantity-selector button, .quantity-selector input { height: 36px; } .quantity-selector button { width: 36px; font-size: 0.9em;} .quantity-selector input { width: 50px; font-size: 0.9em;} .product-actions { gap: 15px; } .action-button { padding: 14px 22px; font-size: 0.85em; } .product-details-section { padding: 35px 20px; } .tab-button { padding: 12px 15px; letter-spacing: 0.8px;} .related-products-grid { grid-template-columns: 1fr 1fr; gap: 20px; } .related-product-card img { padding: 15px; } .related-product-info { padding: 20px 15px;} .related-product-title { font-size: 1em;} .related-product-price { font-size: 1.05em;} .footer-grid { grid-template-columns: 1fr; } }
+
+    </style>
+    <!-- Fin CSS Intégré -->
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="site-header">
+        <div class="container">
+            <a href="#" class="logo">Éclat Horloger</a>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="#">Collections</a></li>
+                    <li><a href="#">Hommes</a></li>
+                    <li><a href="#">Femmes</a></li>
+                    <li><a href="#">Savoir-Faire</a></li>
+                    <li><a href="#">Boutiques</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Fil d'Ariane -->
+        <nav class="breadcrumbs" aria-label="Fil d'Ariane">
+            <ol>
+                <li><a href="#">Accueil</a></li>
+                <li><a href="#">Collections Homme</a></li>
+                <li><a href="#">Chronographes</a></li>
+                <li><span aria-current="page">Chronographe Élégance Automatique</span></li>
+            </ol>
+        </nav>
+
+        <!-- Grille Produit Principale -->
+        <main class="product-page-grid">
+
+            <!-- Section Média (Carrousel) -->
+            <section class="product-media" aria-label="Galerie Média du Produit">
+                <div class="carousel">
+                    <div class="carousel-slides">
+                        <!-- Slide 1: splat.html (Pointer vers le fichier par défaut) -->
+                        <div class="carousel-slide active" data-type="splat" role="tabpanel" id="slide-splat">
+                            <iframe id="splat-viewer"
+                                    src="splat_acier_inoxydable.html" <!-- MISE A JOUR : src initiale -->
+                                    title="Vue 3D Interactive de la Montre"
+                                    frameborder="0"></iframe>
+                            <!-- Le loading indicator est toujours là -->
+                            <div class="loading-indicator" aria-live="polite">Chargement Vue 3D...</div>
+                        </div>
+                        <!-- Slide 2: Image Placeholder (Montre) -->
+                        <div class="carousel-slide" data-type="image" role="tabpanel" id="slide-1">
+                            <img src="https://picsum.photos/800/800?random=1&category=timepiece" alt="Chronographe Élégance - Vue de face" loading="lazy">
+                        </div>
+                        <!-- Slide 3: Image Placeholder (Détail) -->
+                        <div class="carousel-slide" data-type="image" role="tabpanel" id="slide-2">
+                            <img src="https://picsum.photos/800/800?random=2&category=detail" alt="Chronographe Élégance - Détail cadran" loading="lazy">
+                        </div>
+                        <!-- Slide 4: Image Placeholder (Porté) -->
+                        <div class="carousel-slide" data-type="image" role="tabpanel" id="slide-3">
+                            <img src="https://picsum.photos/800/800?random=3&category=luxury" alt="Chronographe Élégance - Au poignet" loading="lazy">
+                        </div>
+                        <!-- Slide 5: Image Placeholder (Boîte) -->
+                        <div class="carousel-slide" data-type="image" role="tabpanel" id="slide-4">
+                            <img src="https://picsum.photos/800/800?random=4&category=packaging" alt="Chronographe Élégance - Écrin" loading="lazy">
+                        </div>
+                    </div>
+
+                    <button class="carousel-control prev" aria-label="Diapositive Précédente"><i class="fa-solid fa-chevron-left"></i></button>
+                    <button class="carousel-control next" aria-label="Diapositive Suivante"><i class="fa-solid fa-chevron-right"></i></button>
+                </div>
+
+                <div class="carousel-thumbnails" role="tablist" aria-label="Sélecteur de média">
+                    <!-- Miniatures générées par JS -->
+                </div>
+            </section>
+
+            <!-- Section Infos Produit (Simplifiée et resserrée) -->
+            <section class="product-info" aria-labelledby="product-title">
+                 <div class="product-vendor">Par <a href="#">Éclat Horloger</a></div>
+                <h1 id="product-title" class="product-title">Chronographe Élégance Automatique</h1>
+
+                <div class="product-rating">
+                    <div class="stars" aria-label="Noté 4.8 sur 5 étoiles">
+                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star-half-stroke"></i>
+                    </div>
+                    <a href="#reviews-tab" class="review-count">(38 Avis)</a>
+                </div>
+
+                <div class="product-price-wrapper">
+                     <div class="product-price">3 850,00 €</div>
+                     <div style="font-size: 0.8em; color: var(--color-text-muted); margin-top: 5px;">TVA incluse</div>
+                </div>
+
+                <div class="product-variants">
+                    <!-- Variante Boîtier/Cadran (Couleur) SEULEMENT -->
+                    <div class="variant-group">
+                        <label class="variant-label" id="color-label">Finition: <span class="selected-value selected-color">Acier Inoxydable</span></label>
+                        <div class="color-swatches" role="radiogroup" aria-labelledby="color-label">
+                            <button class="swatch active" data-value="Acier Inoxydable" style="--swatch-color: #d8d8d8;" aria-label="Sélectionner Acier Inoxydable" role="radio" aria-checked="true"><span class="visually-hidden">Acier Inoxydable</span></button>
+                            <button class="swatch" data-value="Or Jaune" style="--swatch-color: #e7c57d;" aria-label="Sélectionner Or Jaune" role="radio" aria-checked="false"><span class="visually-hidden">Or Jaune</span></button>
+                            <button class="swatch" data-value="Or Rose" style="--swatch-color: #d9a7a0;" aria-label="Sélectionner Or Rose" role="radio" aria-checked="false"><span class="visually-hidden">Or Rose</span></button>
+                            <button class="swatch" data-value="Cadran Bleu" style="--swatch-color: #2a4a6d;" aria-label="Sélectionner Cadran Bleu" role="radio" aria-checked="false"><span class="visually-hidden">Cadran Bleu</span></button>
+                        </div>
+                    </div>
+                    <!-- Le bloc pour le choix du bracelet a été supprimé -->
+                </div>
+
+                 <div class="product-quantity">
+                    <label for="quantity" class="variant-label">Quantité</label>
+                    <div class="quantity-selector">
+                        <button type="button" class="quantity-down" aria-label="Diminuer quantité">-</button>
+                        <input type="number" id="quantity" name="quantity" value="1" min="1" max="5" aria-label="Quantité du produit">
+                        <button type="button" class="quantity-up" aria-label="Augmenter quantité">+</button>
+                    </div>
+                </div>
+
+                <div class="product-actions">
+                    <button type="submit" class="action-button add-to-cart-btn">
+                        <i class="fa-solid fa-shopping-bag"></i> Ajouter au Panier
+                    </button>
+                    <button type="button" class="action-button wishlist-btn">
+                        <i class="fa-regular fa-gem"></i> Ajouter à ma Sélection
+                    </button>
+                </div>
+
+                <div class="trust-info">
+                    <div class="trust-item"><i class="fa-solid fa-certificate"></i> Mouvement Suisse Certifié</div>
+                    <div class="trust-item"><i class="fa-solid fa-shield-alt"></i> Paiement Sécurisé</div>
+                    <div class="trust-item"><i class="fa-solid fa-box"></i> Livraison Offerte & Assurée</div>
+                    <div class="trust-item"><i class="fa-solid fa-calendar-check"></i> Garantie Internationale 5 Ans</div>
+                </div>
+
+                 <div class="social-share">
+                     <p>Partager cette pièce :</p>
+                     <div class="social-links">
+                        <a href="#" aria-label="Partager sur Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" aria-label="Partager sur Pinterest"><i class="fab fa-pinterest-p"></i></a>
+                        <a href="#" aria-label="Partager sur Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" aria-label="Partager par Email"><i class="fas fa-envelope"></i></a>
+                    </div>
+                 </div>
+            </section>
+        </main>
+
+        <!-- Section Détails Produit (Onglets) -->
+        <section class="product-details-section">
+             <nav class="tabs-nav" role="tablist" aria-label="Détails du Produit">
+                <button class="tab-button active" role="tab" aria-selected="true" aria-controls="description-tab" id="description-btn">Description</button>
+                <button class="tab-button" role="tab" aria-selected="false" aria-controls="specs-tab" id="specs-btn">Spécifications</button>
+                <button class="tab-button" role="tab" aria-selected="false" aria-controls="reviews-tab" id="reviews-btn">Avis Clients (38)</button>
+                <button class="tab-button" role="tab" aria-selected="false" aria-controls="care-tab" id="care-btn">Entretien</button>
+             </nav>
+            <div class="tab-content active" id="description-tab" role="tabpanel" aria-labelledby="description-btn"><h3>L'Art de la Précision</h3><p>Le Chronographe Élégance Automatique incarne la quintessence du savoir-faire horloger suisse. Son mouvement automatique, visible à travers un fond saphir, bat au rythme de la tradition et de l'innovation. Le cadran soleillé, orné d'index appliqués à la main, offre une lisibilité parfaite et un raffinement intemporel.</p><p>Conçu pour les connaisseurs exigeants, ce garde-temps allie performance chronométrique et design sophistiqué. Chaque détail, du polissage du boîtier à la finition du bracelet, témoigne d'une quête incessante de perfection.</p><ul><li>Mouvement chronographe automatique manufacture Calibre EH-02.</li><li>Boîtier en acier 316L aux finitions polies et satinées.</li><li>Verre saphir bombé avec traitement anti-reflets multicouches.</li><li>Cadran argenté soleillé avec compteurs azurés.</li><li>Étanchéité garantie jusqu'à 100 mètres.</li></ul></div>
+            <div class="tab-content" id="specs-tab" role="tabpanel" aria-labelledby="specs-btn"><h3>Caractéristiques Techniques</h3><ul><li><strong>Référence :</strong> EC-AUTO-CH-S01</li><li><strong>Mouvement :</strong> Calibre EH-02 Automatique, Certifié COSC</li><li><strong>Fonctions :</strong> Heures, Minutes, Secondes, Date, Chronographe</li><li><strong>Réserve de Marche :</strong> Environ 60 heures</li><li><strong>Boîtier :</strong> Acier inoxydable 316L, Diamètre 41mm, Épaisseur 13.5mm</li><li><strong>Cadran :</strong> Argenté soleillé, Index appliqués Super-LumiNova®</li><li><strong>Verre :</strong> Saphir bombé, traitement anti-reflets</li><li><strong>Fond :</strong> Vissé avec verre saphir</li><li><strong>Étanchéité :</strong> 10 ATM (100 mètres)</li><li><strong>Bracelet :</strong> Compatible avec bracelets 20mm (vendu séparément ou configuré)</li><li><strong>Entrecorne :</strong> 20mm</li></ul></div>
+            <div class="tab-content" id="reviews-tab" role="tabpanel" aria-labelledby="reviews-btn"><h3>Avis de nos Clients</h3><p>Découvrez l'expérience Éclat Horloger à travers leurs mots.</p><div class="review-summary" style="margin-bottom: 20px;"><p><strong>Alexandre P.</strong> - <span class="stars" style="font-size: 0.9em;"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></span><br>Une montre magnifique, les finitions sont exceptionnelles. Le mouvement est d'une précision redoutable. Très satisfait de mon acquisition.</p><hr style="margin: 20px 0; border: none; border-top: 1px solid var(--color-border-subtle);"><p><strong>Sophie L.</strong> - <span class="stars" style="font-size: 0.9em;"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-regular fa-star"></i></span><br>Très belle pièce horlogère. Le service client a été parfait. Un peu épaisse peut-être, mais élégante.</p><hr style="margin: 20px 0; border: none; border-top: 1px solid var(--color-border-subtle);"><a href="#">Lire les 38 avis...</a></div></div>
+            <div class="tab-content" id="care-tab" role="tabpanel" aria-labelledby="care-btn"><h3>Conseils d'Entretien</h3><p>Pour préserver la beauté et la précision de votre Chronographe Élégance :</p><ul><li>Évitez les chocs thermiques importants et les champs magnétiques puissants.</li><li>Nettoyez régulièrement le boîtier avec une brosse douce et de l'eau savonneuse tiède. Rincez à l'eau claire et séchez avec un chiffon doux.</li><li>Faites vérifier l'étanchéité de votre montre tous les 2 ans par un centre de service agréé Éclat Horloger.</li><li>Une révision complète du mouvement est recommandée tous les 5 à 7 ans pour garantir sa longévité et sa performance.</li></ul></div>
+        </section>
+
+        <!-- Section Produits Connexes -->
+        <section class="related-products-section">
+            <div class="container">
+                <h2>Vous Pourriez Également Apprécier</h2>
+                <div class="related-products-grid">
+                    <a href="#" class="related-product-card"><div class="image-container"><img src="https://picsum.photos/300/300?random=10&category=watch" alt="Montre Classique Automatique" loading="lazy"></div><div class="related-product-info"><h3 class="related-product-title">Classique Automatique 3 Aiguilles</h3><p class="related-product-price">2 500,00 €</p><span class="view-details-link">Voir Détails</span></div></a>
+                    <a href="#" class="related-product-card"><div class="image-container"><img src="https://picsum.photos/300/300?random=11&category=timepiece" alt="Montre Plongée Professionnelle" loading="lazy"></div><div class="related-product-info"><h3 class="related-product-title">Abysse Diver 300M</h3><p class="related-product-price">3 200,00 €</p><span class="view-details-link">Voir Détails</span></div></a>
+                    <a href="#" class="related-product-card"><div class="image-container"><img src="https://picsum.photos/300/300?random=12&category=jewelry" alt="Montre Femme Joaillerie" loading="lazy"></div><div class="related-product-info"><h3 class="related-product-title">Étoile Céleste Quartz Diamants</h3><p class="related-product-price">4 900,00 €</p><span class="view-details-link">Voir Détails</span></div></a>
+                    <a href="#" class="related-product-card"><div class="image-container"><img src="https://picsum.photos/300/300?random=13&category=accessories" alt="Remontoir de Montre" loading="lazy"></div><div class="related-product-info"><h3 class="related-product-title">Écrin Remontoir Duo Bois Précieux</h3><p class="related-product-price">450,00 €</p><span class="view-details-link">Voir Détails</span></div></a>
+                </div>
+            </div>
+        </section>
+
+    </div> <!-- /.container -->
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-column"><h4>Collections</h4><ul><li><a href="#">Chronographes</a></li><li><a href="#">Classiques</a></li><li><a href="#">Plongée</a></li><li><a href="#">Joaillerie Femme</a></li><li><a href="#">Nouveautés</a></li></ul></div>
+                <div class="footer-column"><h4>Services</h4><ul><li><a href="#">Trouver une Boutique</a></li><li><a href="#">Prendre Rendez-vous</a></li><li><a href="#">Service Client</a></li><li><a href="#">Entretien & Réparation</a></li><li><a href="#">Garantie</a></li></ul></div>
+                <div class="footer-column"><h4>La Maison</h4><ul><li><a href="#">Notre Histoire</a></li><li><a href="#">Savoir-Faire</a></li><li><a href="#">Engagements Durables</a></li><li><a href="#">Carrières</a></li><li><a href="#">Presse</a></li></ul></div>
+                <div class="footer-column"><h4>Suivez-Nous</h4><ul><li><a href="#">Instagram</a></li><li><a href="#">Facebook</a></li><li><a href="#">Pinterest</a></li><li><a href="#">LinkedIn</a></li><li><a href="#">S'inscrire à la Newsletter</a></li></ul></div>
+            </div>
+            <div class="footer-bottom"> © 2023 Éclat Horloger SA. Tous droits réservés. | <a href="#">Mentions Légales</a> | <a href="#">Politique de Confidentialité</a> | <a href="#">Conditions Générales de Vente</a></div>
+        </div>
+    </footer>
+
+    <!-- JavaScript Intégré -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- Logique Carrousel ---
+            const carousel = document.querySelector('.carousel');
+            if (carousel) {
+                const slidesContainer = carousel.querySelector('.carousel-slides');
+                const slides = slidesContainer ? Array.from(slidesContainer.querySelectorAll('.carousel-slide')) : [];
+                const prevButton = carousel.querySelector('.carousel-control.prev');
+                const nextButton = carousel.querySelector('.carousel-control.next');
+                const thumbnailsContainer = carousel.querySelector('.carousel-thumbnails');
+                const splatIframe = document.getElementById('splat-viewer'); // Référence à l'iframe
+                const splatSlide = carousel.querySelector('.carousel-slide[data-type="splat"]');
+                // Récupérer l'indicateur DEPUIS le slide splat
+                const splatLoadingIndicator = splatSlide ? splatSlide.querySelector('.loading-indicator') : null;
+
+                let currentIndex = 0;
+                let thumbnails = [];
+
+                // Gestionnaire pour quand l'iframe (nouveau splat) est chargé
+                if (splatIframe) {
+                    splatIframe.addEventListener('load', () => {
+                        splatIframe.classList.add('loaded'); // Ajoute la classe pour masquer via CSS
+                        console.log("Nouveau Splat HTML chargé:", splatIframe.src);
+                        // Masquer explicitement au cas où le CSS prend du temps
+                        if (splatLoadingIndicator) {
+                            splatLoadingIndicator.classList.remove('visible');
+                        }
+                    });
+                    // Gestionnaire d'erreur si le fichier splat n'est pas trouvé
+                    splatIframe.addEventListener('error', () => {
+                        console.error("Erreur: Impossible de charger", splatIframe.src);
+                        splatIframe.classList.remove('loaded'); // S'assurer qu'il n'est pas marqué comme chargé
+                        if (splatLoadingIndicator) {
+                            splatLoadingIndicator.textContent = "Erreur chargement 3D";
+                            splatLoadingIndicator.classList.add('visible'); // Garder visible si erreur
+                        }
+                    });
+                }
+
+                // Créer Miniatures (inchangé)
+                 function createThumbnails() { /* ... code inchangé ... */
+                    if (!thumbnailsContainer) return;
+                    thumbnailsContainer.innerHTML = ''; thumbnails = [];
+                    slides.forEach((slide, index) => {
+                        const thumb = document.createElement('button');
+                        thumb.classList.add('thumbnail-item'); thumb.dataset.index = index;
+                        thumb.setAttribute('role', 'tab'); thumb.setAttribute('aria-controls', slide.id); thumb.setAttribute('aria-selected', index === 0 ? 'true' : 'false');
+                        const slideType = slide.dataset.type; thumb.dataset.type = slideType;
+                        if (slideType === 'splat') {
+                            thumb.innerHTML = '<span class="visually-hidden">Vue 3D</span><i class="fa-solid fa-cube"></i>';
+                            thumb.setAttribute('aria-label', 'Sélectionner Vue 3D');
+                        } else {
+                            const img = slide.querySelector('img');
+                            if (img) {
+                                const thumbImg = document.createElement('img'); let thumbSrc = img.src;
+                                if (thumbSrc.includes('picsum.photos')) { const baseUrl = thumbSrc.split('?')[0]; thumbSrc = `${baseUrl.replace('/800/800', '/100/100')}?random=thumb${index}`; }
+                                thumbImg.src = thumbSrc; thumbImg.alt = `Miniature ${index + 1}: ${img.alt || 'Image produit'}`; thumbImg.loading = 'lazy';
+                                thumb.appendChild(thumbImg); thumb.setAttribute('aria-label', `Sélectionner image ${index}`);
+                            }
+                        }
+                        thumb.addEventListener('click', () => goToSlide(index)); thumbnailsContainer.appendChild(thumb); thumbnails.push(thumb);
+                    });
+                }
+
+                // Mettre à jour état Carrousel (inchangé)
+                function updateCarousel() { /* ... code inchangé ... */
+                    slides.forEach((slide, index) => { const isActive = index === currentIndex; slide.classList.toggle('active', isActive); slide.setAttribute('aria-hidden', !isActive); });
+                    thumbnails.forEach((thumb, index) => { const isActive = index === currentIndex; thumb.classList.toggle('active', isActive); thumb.setAttribute('aria-selected', isActive); thumb.setAttribute('tabindex', isActive ? '0' : '-1'); });
+                    if(prevButton) prevButton.disabled = currentIndex === 0; if(nextButton) nextButton.disabled = currentIndex === slides.length - 1;
+                    slides.forEach((slide, index) => { if(slide.dataset.type === 'splat') { const iframe = slide.querySelector('iframe'); if (iframe?.contentWindow) { try { const message = index === currentIndex ? 'play' : 'pause'; /* iframe.contentWindow.postMessage(message, '*'); */ } catch (e) {} } } });
+                }
+
+                // Aller à la slide (inchangé)
+                function goToSlide(index) { if (index < 0 || index >= slides.length) return; currentIndex = index; updateCarousel(); }
+                if(prevButton) prevButton.addEventListener('click', () => goToSlide(currentIndex - 1));
+                if(nextButton) nextButton.addEventListener('click', () => goToSlide(currentIndex + 1));
+
+                // Nav clavier miniatures (inchangé)
+                thumbnailsContainer?.addEventListener('keydown', (e) => { /* ... code inchangé ... */
+                    let newIndex = currentIndex;
+                    if (['ArrowRight', 'ArrowDown'].includes(e.key)) { newIndex = (currentIndex + 1) % slides.length; }
+                    else if (['ArrowLeft', 'ArrowUp'].includes(e.key)) { newIndex = (currentIndex - 1 + slides.length) % slides.length; }
+                    else if (e.key === 'Home') { newIndex = 0; } else if (e.key === 'End') { newIndex = slides.length - 1; }
+                    else { return; }
+                    e.preventDefault(); goToSlide(newIndex); thumbnails[newIndex].focus();
+                });
+
+                // Initialisation Carrousel (inchangé)
+                if (slides.length > 0) { slides.forEach((slide, index) => slide.id = `slide-${slide.dataset.type === 'splat' ? 'splat' : index}`); createThumbnails(); updateCarousel(); }
+                else { if(carousel) carousel.style.display = 'none'; }
+            } // Fin if (carousel)
+
+
+            // --- Fonction Helper pour formater le nom de fichier ---
+            function formatColorToFilename(colorValue) {
+                if (!colorValue) return '';
+                return colorValue.toLowerCase().replace(/\s+/g, '_'); // Minuscules, espaces -> underscores
+            }
+
+
+            // --- Logique Sélection Variantes (MODIFIÉE pour splat dynamique) ---
+            function setupVariantSelection(containerSelector, itemSelector, selectedDisplaySelector, attributeName) {
+                const container = document.querySelector(containerSelector);
+                const display = document.querySelector(selectedDisplaySelector);
+                if (!container) return; // Ne pas bloquer si un sélecteur n'existe pas
+                const items = container.querySelectorAll(itemSelector);
+
+                items.forEach(item => {
+                    item.addEventListener('click', () => {
+                        // 1. Vérifier si déjà actif
+                        if (item.classList.contains('active')) {
+                            return; // Ne rien faire si on clique sur l'élément déjà actif
+                        }
+
+                        // 2. Mettre à jour l'UI (commun à toutes les variantes)
+                        items.forEach(i => { i.classList.remove('active'); i.setAttribute('aria-checked', 'false'); });
+                        item.classList.add('active'); item.setAttribute('aria-checked', 'true');
+                        const selectedValue = item.dataset.value;
+                        if (display) display.textContent = selectedValue; // Mettre à jour le texte si le span existe
+                        console.log(`${attributeName} sélectionné:`, selectedValue);
+
+                        // 3. Logique spécifique pour les pastilles de couleur (swatch)
+                        if (item.classList.contains('swatch')) {
+                            const splatIframe = document.getElementById('splat-viewer');
+                             // Récupérer l'indicateur DANS le scope où on en a besoin
+                             const splatLoadingIndicator = splatIframe?.closest('.carousel-slide[data-type="splat"]')?.querySelector('.loading-indicator');
+
+                            if (splatIframe && selectedValue) {
+                                const newFilenamePart = formatColorToFilename(selectedValue);
+                                const newSplatSrc = `splat_${newFilenamePart}.html`;
+
+                                // Vérifier si la source va réellement changer
+                                if (splatIframe.getAttribute('src') !== newSplatSrc) {
+                                    console.log("Changement du splat vers:", newSplatSrc);
+
+                                    // Afficher le loader AVANT de changer la source
+                                    splatIframe.classList.remove('loaded'); // Retirer 'loaded' pour le CSS
+                                    if (splatLoadingIndicator) {
+                                        splatLoadingIndicator.textContent = "Chargement Vue 3D..."; // Reset text
+                                        splatLoadingIndicator.classList.add('visible'); // Rendre visible
+                                    }
+
+                                    // Changer la source de l'iframe pour charger le nouveau fichier
+                                    splatIframe.setAttribute('src', newSplatSrc);
+                                }
+                            }
+                        }
+                    });
+                });
+            }
+            // Appel seulement pour la couleur
+            setupVariantSelection('.color-swatches', '.swatch', '.selected-color', 'Finition');
+
+            // --- Logique Sélecteur Quantité (Identique) ---
+            const quantityInput = document.getElementById('quantity'); const downButton = document.querySelector('.quantity-down'); const upButton = document.querySelector('.quantity-up');
+            if (quantityInput && downButton && upButton) { /* ... code quantité inchangé ... */
+                const min = parseInt(quantityInput.min, 10); const max = parseInt(quantityInput.max, 10);
+                const updateQtyButtons = () => { const val = parseInt(quantityInput.value, 10); downButton.disabled = val <= min; upButton.disabled = val >= max; };
+                downButton.addEventListener('click', () => { let val = parseInt(quantityInput.value, 10); if (val > min) quantityInput.value = val - 1; updateQtyButtons(); });
+                upButton.addEventListener('click', () => { let val = parseInt(quantityInput.value, 10); if (val < max) quantityInput.value = val + 1; updateQtyButtons(); });
+                quantityInput.addEventListener('change', () => { let val = parseInt(quantityInput.value, 10); if (isNaN(val) || val < min) quantityInput.value = min; else if (val > max) quantityInput.value = max; updateQtyButtons(); });
+                updateQtyButtons();
+             }
+
+            // --- Logique Onglets (Identique) ---
+            const tabButtons = document.querySelectorAll('.tab-button'); const tabContents = document.querySelectorAll('.tab-content');
+            tabButtons.forEach(button => { /* ... code onglets inchangé ... */
+                button.addEventListener('click', () => {
+                    tabButtons.forEach(btn => { btn.classList.remove('active'); btn.setAttribute('aria-selected', 'false'); btn.setAttribute('tabindex', '-1'); });
+                    tabContents.forEach(content => { content.classList.remove('active'); content.setAttribute('aria-hidden', 'true'); });
+                    button.classList.add('active'); button.setAttribute('aria-selected', 'true'); button.setAttribute('tabindex', '0');
+                    const targetContent = document.getElementById(button.getAttribute('aria-controls'));
+                    if (targetContent) { targetContent.classList.add('active'); targetContent.setAttribute('aria-hidden', 'false'); }
+                });
+                if (!button.classList.contains('active')) button.setAttribute('tabindex', '-1');
+            });
+            const tabsNav = document.querySelector('.tabs-nav');
+            if (tabsNav) { /* ... code nav clavier onglets inchangé ... */
+                 tabsNav.addEventListener('keydown', (e) => {
+                    const currentTab = document.activeElement; if (!currentTab?.matches('.tab-button')) return;
+                    let currentIndex = Array.from(tabButtons).indexOf(currentTab), newIndex = currentIndex;
+                    if (e.key === 'ArrowRight') { newIndex = (currentIndex + 1) % tabButtons.length; } else if (e.key === 'ArrowLeft') { newIndex = (currentIndex - 1 + tabButtons.length) % tabButtons.length; }
+                    else if (e.key === 'Home') { newIndex = 0; } else if (e.key === 'End') { newIndex = tabButtons.length - 1; } else { return; }
+                    e.preventDefault(); tabButtons[newIndex].focus();
+                 });
+            }
+
+        }); // Fin DOMContentLoaded
+    </script>
+    <!-- Fin JavaScript Intégré -->
+
+</body>
+</html>
