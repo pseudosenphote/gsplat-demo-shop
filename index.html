@@ -221,8 +221,21 @@
         /* --- Footer --- */
         .site-footer { background-color: var(--color-dark); color: #adb5bd; padding: 70px 0; font-size: 0.9em; margin-top: 60px; }
         .footer-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 45px; margin-bottom: 50px;}
-        .footer-column h4 { font-family: var(--font-primary); font-size: 0.95em; color: #fff; margin-bottom: 25px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px;}
-        .footer-column ul { list-style: none; }
+        /* Footer H4 Style (for Desktop) */
+        .footer-column h4 {
+            font-family: var(--font-primary);
+            font-size: 0.95em;
+            color: #fff;
+            margin-bottom: 25px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+        }
+        /* Footer Toggle Button Base Style (Hidden on Desktop) */
+        .footer-column button.footer-toggle {
+            display: none;
+        }
+        .footer-column ul { list-style: none; padding-left: 0; /* Ensure no default padding */ }
         .footer-column li { margin-bottom: 14px; }
         .footer-column a { color: #adb5bd; transition: color var(--transition-speed) ease; }
         .footer-column a:hover { color: #fff; }
@@ -289,56 +302,52 @@
              .main-nav ul {
                 display: flex; /* Ensure flex is re-enabled */
              }
+             /* Ensure footer accordion elements are hidden/reset */
+             .footer-column h4 { display: block; }
+             .footer-column button.footer-toggle { display: none; }
+             .footer-column ul {
+                 max-height: none; /* Remove height restriction */
+                 overflow: visible;
+                 padding-bottom: 0; /* Reset padding */
+             }
         }
 
         /* Tablet Landscape & Smaller Desktops */
         @media (max-width: 1200px) {
             .container { max-width: 1140px; padding: 0 25px; } /* Adjust container slightly */
             .related-products-grid { grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); }
+            .footer-grid { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 40px; } /* Adjust footer columns */
         }
 
         /* Portrait Tablet & Below - Mobile Nav Trigger Point */
         @media (max-width: 992px) {
             .container { padding: 0 25px; } /* Consistent padding */
             .site-header .container {
-                /* Keep flex row for logo and button alignment */
                 flex-direction: row;
-                justify-content: space-between; /* Logo left, button right */
+                justify-content: space-between;
                 align-items: center;
-                /* position: relative;  Already set on .site-header */
             }
             .logo { font-size: 1.7em; }
 
             /* --- Mobile Nav Activation --- */
-            .mobile-nav-toggle {
-                display: block; /* Show the hamburger button */
-            }
-            .main-nav {
-                display: none; /* Hide the nav container by default */
-                /* Mobile positioning/styles handled by '.site-header.nav-open .main-nav' */
-            }
-            .main-nav ul {
-                /* Removed desktop gap/flex settings here, apply in '.nav-open ul' */
-                gap: 0;
-            }
+            .mobile-nav-toggle { display: block; }
+            .main-nav { display: none; }
+            .main-nav ul { gap: 0; }
              /* --- End Mobile Nav Activation --- */
 
-            .product-page-grid {
-                grid-template-columns: 1fr; /* Stack image and info */
-                gap: 40px;
-                padding: 40px;
-            }
+            .product-page-grid { grid-template-columns: 1fr; gap: 40px; padding: 40px; }
             .product-title { font-size: 2.3em; }
             .product-price { font-size: 2em; }
 
-            .tabs-nav { overflow-x: auto; white-space: nowrap; padding-bottom: 5px; /* Add scroll for tabs if they overflow */ }
-            .tab-button { flex-shrink: 0; } /* Prevent buttons shrinking */
+            .tabs-nav { overflow-x: auto; white-space: nowrap; padding-bottom: 5px; }
+            .tab-button { flex-shrink: 0; }
 
-            .footer-grid { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 40px; }
+            /* Adjust footer grid for tablet */
+            .footer-grid { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 35px; }
         }
 
-        /* Mobile Landscape & Portrait */
-        @media (max-width: 767px) { /* Adjusted from 768 */
+        /* Mobile Landscape & Portrait - Footer Accordion Trigger Point */
+        @media (max-width: 767px) {
             .container { padding: 0 20px; }
             .site-header { padding: 20px 0; margin-bottom: 30px; }
             .logo { font-size: 1.6em; }
@@ -350,7 +359,7 @@
             .product-title { font-size: 2em; }
             .product-price { font-size: 1.8em; }
 
-            .product-info { gap: 15px; } /* Reduce gap in info section */
+            .product-info { gap: 15px; }
             .product-actions { gap: 12px; }
             .action-button { padding: 15px 25px; font-size: 0.9em; }
 
@@ -365,11 +374,83 @@
 
             .related-products-section { padding: 40px 0; margin-bottom: 40px; }
             .related-products-section h2 { font-size: 1.8em; margin-bottom: 35px; }
-            .related-products-grid { grid-template-columns: 1fr 1fr; gap: 20px; } /* Keep 2 columns even on small screens */
+            .related-products-grid { grid-template-columns: 1fr 1fr; gap: 20px; }
 
-            .site-footer { padding: 50px 0; margin-top: 40px; }
-            .footer-grid { grid-template-columns: 1fr 1fr; gap: 30px; } /* Two columns for footer */
-            .footer-bottom { padding-top: 30px; font-size: 0.8em; }
+            /* --- Footer Accordion Styles --- */
+            .site-footer {
+                padding: 40px 0 30px; /* Réduire le padding vertical */
+                 margin-top: 40px;
+            }
+            .footer-grid {
+                grid-template-columns: 1fr; /* Forcer une seule colonne pour l'accordéon */
+                gap: 0px; /* Pas d'espace entre les colonnes repliées */
+                margin-bottom: 30px; /* Réduire l'espace avant le bottom */
+            }
+            .footer-column {
+                border-bottom: 1px solid #495057; /* Séparateur entre sections */
+            }
+             .footer-column:last-child {
+                 border-bottom: none;
+             }
+            .footer-column h4 { /* Cacher le H4 sur mobile */
+                display: none;
+            }
+            .footer-column button.footer-toggle { /* Afficher et styler le bouton */
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                width: 100%;
+                background: none;
+                border: none;
+                color: #fff;
+                font-family: var(--font-primary);
+                font-size: 1em;
+                font-weight: 700;
+                text-transform: uppercase;
+                letter-spacing: 1.5px;
+                padding: 18px 0;
+                margin: 0;
+                text-align: left;
+                cursor: pointer;
+            }
+             .footer-column button.footer-toggle i { /* Style de l'icône chevron */
+                 font-size: 0.8em;
+                 transition: transform var(--transition-speed) ease;
+                 color: #adb5bd;
+             }
+            .footer-column button.footer-toggle[aria-expanded="true"] i {
+                transform: rotate(180deg); /* Rotation quand ouvert */
+            }
+
+            .footer-column ul {
+                /* Cacher la liste par défaut avec max-height pour l'animation */
+                max-height: 0;
+                overflow: hidden;
+                transition: max-height 0.4s ease-out, padding-bottom 0.4s ease-out;
+                margin: 0;
+                padding-bottom: 0; /* Pas de padding quand fermé */
+            }
+            .footer-column button.footer-toggle[aria-expanded="true"] + ul {
+                /* Afficher la liste quand le bouton est ouvert */
+                max-height: 300px; /* Ajustez si nécessaire */
+                padding-bottom: 20px; /* Ajouter de l'espace sous la liste ouverte */
+                transition: max-height 0.5s ease-in, padding-bottom 0.5s ease-in;
+            }
+            .footer-column li {
+                margin-bottom: 12px; /* Espacement réduit des items */
+                padding-left: 10px; /* Légère indentation */
+            }
+             .footer-column li:last-child {
+                 margin-bottom: 0;
+             }
+            .footer-column a {
+                font-size: 0.9em; /* Taille de police réduite pour les liens */
+            }
+            .footer-bottom {
+                 padding-top: 25px;
+                 font-size: 0.8em;
+            }
+            /* --- Fin Footer Accordion Styles --- */
         }
 
         /* Small Mobile Portrait */
@@ -408,9 +489,20 @@
             .related-product-price { font-size: 1em; margin-bottom: 10px; }
             .view-details-link { font-size: 0.75em; }
 
-            .footer-grid { grid-template-columns: 1fr; } /* Single column footer on smallest screens */
-            .footer-column h4 { margin-bottom: 15px; }
-            .footer-column li { margin-bottom: 10px; }
+             /* Footer Adjustments for Small Mobile */
+             .footer-column button.footer-toggle {
+                 font-size: 0.95em; /* Encore un peu plus petit */
+                 padding: 15px 0;
+             }
+             .footer-column li {
+                 margin-bottom: 10px;
+             }
+             .footer-column a {
+                font-size: 0.85em;
+             }
+             .footer-bottom {
+                 font-size: 0.75em;
+             }
         }
 
     </style>
@@ -423,7 +515,7 @@
         <div class="container">
             <a href="#" class="logo">Éclat Horloger</a>
 
-            <!-- Hamburger Menu Button (Added) -->
+            <!-- Hamburger Menu Button -->
             <button class="mobile-nav-toggle" aria-controls="main-navigation" aria-expanded="false">
                 <span class="visually-hidden">Menu</span>
                 <i class="fas fa-bars open-icon" aria-hidden="true"></i>
@@ -593,17 +685,68 @@
     <!-- Footer -->
     <footer class="site-footer">
         <div class="container">
+            <!-- UPDATED Footer Grid for Accordion -->
             <div class="footer-grid">
-                <div class="footer-column"><h4>Collections</h4><ul><li><a href="#">Chronographes</a></li><li><a href="#">Classiques</a></li><li><a href="#">Plongée</a></li><li><a href="#">Joaillerie Femme</a></li><li><a href="#">Nouveautés</a></li></ul></div>
-                <div class="footer-column"><h4>Services</h4><ul><li><a href="#">Trouver une Boutique</a></li><li><a href="#">Prendre Rendez-vous</a></li><li><a href="#">Service Client</a></li><li><a href="#">Entretien & Réparation</a></li><li><a href="#">Garantie</a></li></ul></div>
-                <div class="footer-column"><h4>La Maison</h4><ul><li><a href="#">Notre Histoire</a></li><li><a href="#">Savoir-Faire</a></li><li><a href="#">Engagements Durables</a></li><li><a href="#">Carrières</a></li><li><a href="#">Presse</a></li></ul></div>
-                <div class="footer-column"><h4>Suivez-Nous</h4><ul><li><a href="#">Instagram</a></li><li><a href="#">Facebook</a></li><li><a href="#">Pinterest</a></li><li><a href="#">LinkedIn</a></li><li><a href="#">S'inscrire à la Newsletter</a></li></ul></div>
+                <div class="footer-column">
+                    <!-- Desktop H4 -->
+                    <h4>Collections</h4>
+                    <!-- Mobile Toggle Button -->
+                    <button class="footer-toggle" aria-expanded="false" aria-controls="footer-col-collections">
+                        Collections <i class="fas fa-chevron-down" aria-hidden="true"></i>
+                    </button>
+                    <ul id="footer-col-collections">
+                        <li><a href="#">Chronographes</a></li>
+                        <li><a href="#">Classiques</a></li>
+                        <li><a href="#">Plongée</a></li>
+                        <li><a href="#">Joaillerie Femme</a></li>
+                        <li><a href="#">Nouveautés</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Services</h4>
+                     <button class="footer-toggle" aria-expanded="false" aria-controls="footer-col-services">
+                        Services <i class="fas fa-chevron-down" aria-hidden="true"></i>
+                    </button>
+                    <ul id="footer-col-services">
+                        <li><a href="#">Trouver une Boutique</a></li>
+                        <li><a href="#">Prendre Rendez-vous</a></li>
+                        <li><a href="#">Service Client</a></li>
+                        <li><a href="#">Entretien & Réparation</a></li>
+                        <li><a href="#">Garantie</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                     <h4>La Maison</h4>
+                     <button class="footer-toggle" aria-expanded="false" aria-controls="footer-col-maison">
+                        La Maison <i class="fas fa-chevron-down" aria-hidden="true"></i>
+                    </button>
+                    <ul id="footer-col-maison">
+                        <li><a href="#">Notre Histoire</a></li>
+                        <li><a href="#">Savoir-Faire</a></li>
+                        <li><a href="#">Engagements Durables</a></li>
+                        <li><a href="#">Carrières</a></li>
+                        <li><a href="#">Presse</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                     <h4>Suivez-Nous</h4>
+                     <button class="footer-toggle" aria-expanded="false" aria-controls="footer-col-social">
+                        Suivez-Nous <i class="fas fa-chevron-down" aria-hidden="true"></i>
+                    </button>
+                    <ul id="footer-col-social">
+                        <li><a href="#">Instagram</a></li>
+                        <li><a href="#">Facebook</a></li>
+                        <li><a href="#">Pinterest</a></li>
+                        <li><a href="#">LinkedIn</a></li>
+                        <li><a href="#">S'inscrire à la Newsletter</a></li>
+                    </ul>
+                </div>
             </div>
             <div class="footer-bottom"> © 2023 Éclat Horloger SA. Tous droits réservés. | <a href="#">Mentions Légales</a> | <a href="#">Politique de Confidentialité</a> | <a href="#">Conditions Générales de Vente</a></div>
         </div>
     </footer>
 
-    <!-- JavaScript Intégré (avec ajout mobile nav) -->
+    <!-- JavaScript Intégré (avec ajout mobile nav et footer accordion) -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             // --- Logique Carrousel ---
@@ -613,7 +756,7 @@
                 const slides = slidesContainer ? Array.from(slidesContainer.querySelectorAll('.carousel-slide')) : [];
                 const prevButton = carousel.querySelector('.carousel-control.prev');
                 const nextButton = carousel.querySelector('.carousel-control.next');
-                const thumbnailsContainer = document.querySelector('.carousel-thumbnails'); // Changed selector
+                const thumbnailsContainer = document.querySelector('.carousel-thumbnails');
                 const splatIframe = document.getElementById('splat-viewer');
                 const splatSlide = carousel.querySelector('.carousel-slide[data-type="splat"]');
                 const splatLoadingIndicator = splatSlide ? splatSlide.querySelector('.loading-indicator') : null;
@@ -683,7 +826,7 @@
                     e.preventDefault(); goToSlide(newIndex); thumbnails[newIndex].focus();
                 });
 
-                if (slides.length > 0) { slides.forEach((slide, index) => slide.id = `slide-${slide.dataset.type === 'splat' ? 'splat' : index+1}`); createThumbnails(); updateCarousel(); } // Corrected slide id generation slightly
+                if (slides.length > 0) { slides.forEach((slide, index) => slide.id = `slide-${slide.dataset.type === 'splat' ? 'splat' : index+1}`); createThumbnails(); updateCarousel(); }
                 else { if(carousel) carousel.style.display = 'none'; }
             } // Fin if (carousel)
 
@@ -768,26 +911,36 @@
                  });
             }
 
-            // --- !! NOUVEAU : Logique Menu Mobile !! ---
+            // --- Logique Menu Mobile ---
             const mobileNavToggle = document.querySelector('.mobile-nav-toggle');
             const siteHeader = document.querySelector('.site-header');
-            const mainNav = document.getElementById('main-navigation'); // Use ID added in HTML
+            const mainNav = document.getElementById('main-navigation');
 
             if (mobileNavToggle && siteHeader && mainNav) {
                 mobileNavToggle.addEventListener('click', () => {
                     const isExpanded = mobileNavToggle.getAttribute('aria-expanded') === 'true';
                     mobileNavToggle.setAttribute('aria-expanded', !isExpanded);
                     siteHeader.classList.toggle('nav-open');
-
-                    // Optional: Add logic here to trap focus or handle clicks outside
                 });
-
-                // Ensure aria-controls is set (redundant if hardcoded in HTML but safe)
                  if(!mobileNavToggle.hasAttribute('aria-controls')) {
                      mobileNavToggle.setAttribute('aria-controls', 'main-navigation');
                  }
             }
-            // --- Fin Logique Menu Mobile ---
+
+            // --- Logique Accordéon Footer ---
+            const footerToggles = document.querySelectorAll('.footer-column button.footer-toggle');
+
+            footerToggles.forEach(toggle => {
+                toggle.addEventListener('click', () => {
+                    const isExpanded = toggle.getAttribute('aria-expanded') === 'true';
+                    const listToToggle = document.getElementById(toggle.getAttribute('aria-controls'));
+
+                    if (listToToggle) {
+                        toggle.setAttribute('aria-expanded', !isExpanded);
+                        // CSS handles the visual change based on the aria-expanded attribute
+                    }
+                });
+            });
 
         }); // Fin DOMContentLoaded
     </script>
