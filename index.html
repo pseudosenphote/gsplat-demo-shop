@@ -3,118 +3,251 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Thiméo Nguyen - Réalisateur</title>
-
-    <!-- Locomotive Scroll CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/locomotive-scroll@4.1.4/dist/locomotive-scroll.min.css">
-
-    <!-- Polices Google Fonts: Poppins & Playfair Display -->
+    <title>Chronographe Automatique Élégance - Modèle Acier</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- CSS -->
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <!-- Conteneur principal -->
-    <div data-scroll-container>
-        <!-- Curseur, Préchargeur, Header, Main, Footer... -->
-        <!-- Le contenu HTML reste identique à la version précédente -->
-        <!-- Curseur Personnalisé -->
-        <div class="cursor"> <div class="cursor-dot"></div> <div class="cursor-circle"></div> </div>
-        <!-- Préchargeur -->
-        <div id="preloader"> <div class="loader-container"> <div class="loader-line"></div> <div class="loader-mask loader-mask-left"></div> <div class="loader-mask loader-mask-right"></div> </div> </div>
-        <!-- Header -->
-        <header class="main-header" id="mainHeader"> <a href="#accueil" class="logo cursor-hover" data-target-cursor="text">Thiméo</a> <nav class="main-nav" id="mainNav"> <ul> <li><a href="#accueil" class="nav-link active cursor-hover" data-target-cursor="text">Accueil</a></li> <li><a href="#portfolio" class="nav-link cursor-hover" data-target-cursor="text">Portfolio</a></li> <li><a href="#parcours" class="nav-link cursor-hover" data-target-cursor="text">Parcours</a></li> <li><a href="#contact" class="nav-link cursor-hover" data-target-cursor="text">Contact</a></li> </ul> </nav> <button class="menu-toggle cursor-hover" id="menuToggle" aria-label="Ouvrir le menu" aria-expanded="false"> <i class="fas fa-bars"></i> <i class="fas fa-times"></i> </button> </header>
-        <main>
-            <!-- Section Accueil -->
-            <section id="accueil" data-scroll-section data-persistent> <div class="container"> <h1 data-hero-title> <span class="line-wrapper"><span class="word-wrapper">Créateur</span></span> <span class="line-wrapper"><span class="word-wrapper">d'Histoires</span></span> <span class="line-wrapper"><span class="word-wrapper">Visuelles.</span></span> </h1> <p class="subtitle" data-hero-subtitle>Réalisateur // Créatif</p> <p data-hero-desc>Je traduis des visions en émotions pures, sculptant la lumière et le temps pour créer des expériences cinématographiques qui résonnent.</p> <div class="hero-cta-wrapper" data-hero-cta> <a href="#portfolio" id="hero-cta-button" class="cta-button cursor-hover">Explorer les Projets</a> </div> </div> </section>
-            <!-- Section Portfolio -->
-            <section id="portfolio" data-scroll-section> <div class="container"> <h2 data-section-title>Œuvres Récentes</h2> <div class="portfolio-grid"> <!-- Projet 1 --> <div class="portfolio-item cursor-hover" data-portfolio-item> <div class="portfolio-media-wrapper"> <div class="portfolio-media"> <iframe src="https://player.vimeo.com/video/137804966?h=34e6f337ec&color=00e0c6&title=0&byline=0&portrait=0&background=1" frameborder="0" allow="autoplay; fullscreen; picture-in-picture"></iframe> </div> </div> <div class="portfolio-info"> <h3><a href="#" class="link-underline cursor-hover" data-target-cursor="text">Dawn of the Cookies</a></h3> <p>Un (très) court-métrage réalisé en un weekend narrant l'histoire d'une mysterieuse distribueuse de cookies...</p> <div class="portfolio-meta"><span class="date">Automne 2023</span></div> </div> </div> <!-- Projet 2 --> <div class="portfolio-item cursor-hover" data-portfolio-item> <div class="portfolio-media-wrapper"> <div class="portfolio-media"> <img src="https://picsum.photos/seed/projetElegant/800/480" alt="Projet Élégant" loading="lazy"> </div> </div> <div class="portfolio-info"> <h3><a href="#" class="link-underline cursor-hover" data-target-cursor="text">Élégance Capturée</a></h3> <p>Direction photo pour une campagne publicitaire de haute couture, jouant sur les contrastes et textures.</p> <div class="portfolio-meta"><span class="date">Été 2023</span></div> </div> </div> <!-- Projet 3 --> <div class="portfolio-item cursor-hover" data-portfolio-item> <div class="portfolio-media-wrapper"> <div class="portfolio-media"> <img src="https://picsum.photos/seed/projetSauvage/800/480" alt="Projet Sauvage" loading="lazy"> </div> </div> <div class="portfolio-info"> <h3><a href="#" class="link-underline cursor-hover" data-target-cursor="text">Instinct Sauvage</a></h3> <p>Images documentaires immersives au cœur de paysages indomptés, révélant une beauté brute.</p> <div class="portfolio-meta"><span class="date">Printemps 2023</span></div> </div> </div> <!-- Projet 4 --> <div class="portfolio-item cursor-hover" data-portfolio-item> <div class="portfolio-media-wrapper"> <div class="portfolio-media"> <iframe src="https://player.vimeo.com/video/82094973?h=3a50f8665b&color=00e0c6&title=0&byline=0&portrait=0&background=1" frameborder="0" allow="autoplay; fullscreen; picture-in-picture"></iframe> </div> </div> <div class="portfolio-info"> <h3><a href="#" class="link-underline cursor-hover" data-target-cursor="text">Rêverie Sonore</a></h3> <p>Clip musical pour un artiste émergent, explorant des mondes surréalistes et mélancoliques.</p> <div class="portfolio-meta"><span class="date">Hiver 2022</span></div> </div> </div> </div> </div> </section>
-            <!-- Section Parcours -->
-            <section id="parcours" data-scroll-section> <div class="container"> <h2 data-section-title>Mon Itinéraire</h2> <div class="parcours-timeline"> <!-- Entrée 1 --> <div class="parcours-entry-wrapper" data-parcours-item> <div class="parcours-entry"> <h3><i class="fas fa-user-graduate"></i>École Supérieure de Cinéma</h3> <span class="date-location">2016 - 2019 | CinéSup, Paris</span> <p>Formation intensive en réalisation, scénario et techniques cinématographiques. Film de diplôme sélectionné dans 3 festivals.</p> </div> </div> <!-- Entrée 2 --> <div class="parcours-entry-wrapper" data-parcours-item> <div class="parcours-entry"> <h3><i class="fas fa-hands-helping"></i>Assistant Réalisateur Polyvalent</h3> <span class="date-location">2019 - 2021 | Diverses Productions</span> <p>Collaboration sur longs métrages indépendants, publicités TV et contenus web. Maîtrise de la logistique de plateau.</p> </div> </div> <!-- Entrée 3 --> <div class="parcours-entry-wrapper" data-parcours-item> <div class="parcours-entry"> <h3><i class="fas fa-video-camera"></i>Réalisateur & DP Freelance</h3> <span class="date-location">Depuis 2021 | Indépendant</span> <p>Développement de projets personnels et commandes clients. Spécialisation en narration visuelle et direction de la photographie.</p> </div> </div> <!-- Entrée 4 --> <div class="parcours-entry-wrapper" data-parcours-item> <div class="parcours-entry"> <h3><i class="fas fa-search"></i>Exploration Créative Continue</h3> <span class="date-location">Permanent | Workshops & Veille</span> <p>Apprentissage constant des nouvelles technologies (caméras, IA en post-prod) et exploration de formes narratives innovantes.</p> </div> </div> </div> </div> </section>
-            <!-- Section Contact -->
-            <section id="contact" data-scroll-section> <div class="container"> <h2 data-section-title>Parlons Cinéma</h2> <div class="contact-container"> <div class="contact-info" data-contact-item> <h3>Une idée ? Un projet ?</h3> <p>Que ce soit pour une collaboration ambitieuse ou une simple discussion autour d'une passion commune, ma porte (et ma boîte mail) est toujours ouverte.</p> <a href="mailto:thimeo.nguyen.vision@email.pro" class="link-underline cursor-hover" data-target-cursor="text"><i class="fas fa-paper-plane"></i> thimeo.nguyen.vision@email.pro</a> <a href="tel:+33698765432" class="link-underline cursor-hover" data-target-cursor="text"><i class="fas fa-mobile-alt"></i> +33 6 98 76 54 32</a> <div class="social-links"> <a href="#" target="_blank" aria-label="Vimeo" title="Vimeo" class="cursor-hover"><i class="fab fa-vimeo-v"></i></a> <a href="#" target="_blank" aria-label="Instagram" title="Instagram" class="cursor-hover"><i class="fab fa-instagram"></i></a> <a href="#" target="_blank" aria-label="LinkedIn" title="LinkedIn" class="cursor-hover"><i class="fab fa-linkedin-in"></i></a> </div> </div> <div class="contact-form" data-contact-item> <h3>Envoyez votre message</h3> <form action="#" method="post"> <div class="form-group"> <input type="text" name="name" placeholder="Nom & Prénom *" required class="cursor-hover" data-target-cursor="text"> </div> <div class="form-group"> <input type="email" name="email" placeholder="Adresse Email *" required class="cursor-hover" data-target-cursor="text"> </div> <div class="form-group"> <input type="text" name="subject" placeholder="Sujet *" required class="cursor-hover" data-target-cursor="text"> </div> <div class="form-group"> <textarea name="message" rows="6" placeholder="Votre message détaillé ici... *" required class="cursor-hover" data-target-cursor="text"></textarea> </div> <button type="submit" class="cta-button cursor-hover">Envoyer</button> </form> </div> </div> </div> </section>
+
+    <!-- Header -->
+    <header class="site-header">
+        <div class="container">
+            <a href="#" class="logo">Éclat Horloger</a>
+
+            <!-- Hamburger Menu Button -->
+            <button class="mobile-nav-toggle" aria-controls="main-navigation" aria-expanded="false">
+                <span class="visually-hidden">Menu</span>
+                <i class="fas fa-bars open-icon" aria-hidden="true"></i>
+                <i class="fas fa-times close-icon" aria-hidden="true"></i>
+            </button>
+
+            <nav class="main-nav" id="main-navigation">
+                <ul>
+                    <li><a href="#">Collections</a></li>
+                    <li><a href="#">Hommes</a></li>
+                    <li><a href="#">Femmes</a></li>
+                    <li><a href="#">Savoir-Faire</a></li>
+                    <li><a href="#">Boutiques</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Fil d'Ariane -->
+        <nav class="breadcrumbs" aria-label="Fil d'Ariane">
+            <ol>
+                <li><a href="#">Accueil</a></li>
+                <li><a href="#">Collections Homme</a></li>
+                <li><a href="#">Chronographes</a></li>
+                <li><span aria-current="page">Chronographe Élégance Automatique</span></li>
+            </ol>
+        </nav>
+
+        <!-- Grille Produit Principale -->
+        <main class="product-page-grid">
+
+            <!-- Section Média (Carrousel) -->
+            <section class="product-media" aria-label="Galerie Média du Produit">
+                <div class="carousel">
+                    <div class="carousel-slides">
+                        <!-- Slide 1: splat.html -->
+                        <div class="carousel-slide active" data-type="splat" role="tabpanel" id="slide-splat">
+                            <iframe id="splat-viewer"
+                                    src="splat_acier_inoxydable.html"
+                                    title="Vue 3D Interactive de la Montre"
+                                    frameborder="0"></iframe>
+                            <div class="loading-indicator" aria-live="polite">Chargement Vue 3D...</div>
+                        </div>
+                        <!-- Slide 2: Image Placeholder -->
+                        <div class="carousel-slide" data-type="image" role="tabpanel" id="slide-1">
+                            <img src="https://picsum.photos/800/800?random=1&category=timepiece" alt="Chronographe Élégance - Vue de face" loading="lazy">
+                        </div>
+                        <!-- Slide 3: Image Placeholder -->
+                        <div class="carousel-slide" data-type="image" role="tabpanel" id="slide-2">
+                            <img src="https://picsum.photos/800/800?random=2&category=detail" alt="Chronographe Élégance - Détail cadran" loading="lazy">
+                        </div>
+                        <!-- Slide 4: Image Placeholder -->
+                        <div class="carousel-slide" data-type="image" role="tabpanel" id="slide-3">
+                            <img src="https://picsum.photos/800/800?random=3&category=luxury" alt="Chronographe Élégance - Au poignet" loading="lazy">
+                        </div>
+                        <!-- Slide 5: Image Placeholder -->
+                        <div class="carousel-slide" data-type="image" role="tabpanel" id="slide-4">
+                            <img src="https://picsum.photos/800/800?random=4&category=packaging" alt="Chronographe Élégance - Écrin" loading="lazy">
+                        </div>
+                    </div>
+
+                    <button class="carousel-control prev" aria-label="Diapositive Précédente"><i class="fa-solid fa-chevron-left"></i></button>
+                    <button class="carousel-control next" aria-label="Diapositive Suivante"><i class="fa-solid fa-chevron-right"></i></button>
+                </div>
+
+                <div class="carousel-thumbnails" role="tablist" aria-label="Sélecteur de média">
+                    <!-- Miniatures générées par JS -->
+                </div>
+            </section>
+
+            <!-- Section Infos Produit -->
+            <section class="product-info" aria-labelledby="product-title">
+                 <div class="product-vendor">Par <a href="#">Éclat Horloger</a></div>
+                <h1 id="product-title" class="product-title">Chronographe Élégance Automatique</h1>
+
+                <div class="product-rating">
+                    <div class="stars" aria-label="Noté 4.8 sur 5 étoiles">
+                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star-half-stroke"></i>
+                    </div>
+                    <a href="#reviews-tab" class="review-count">(38 Avis)</a>
+                </div>
+
+                <div class="product-price-wrapper">
+                     <div class="product-price">CHF 3 850</div>
+                     <div style="font-size: 0.8em; color: var(--color-text-muted); margin-top: 5px;">TVA incluse</div>
+                </div>
+
+                <div class="product-variants">
+                    <div class="variant-group">
+                        <label class="variant-label" id="color-label">Finition: <span class="selected-value selected-color">Acier Inoxydable</span></label>
+                        <div class="color-swatches" role="radiogroup" aria-labelledby="color-label">
+                            <button class="swatch active" data-value="Acier Inoxydable" style="--swatch-color: #d8d8d8;" aria-label="Sélectionner Acier Inoxydable" role="radio" aria-checked="true"><span class="visually-hidden">Acier Inoxydable</span></button>
+                            <button class="swatch" data-value="Or Jaune" style="--swatch-color: #e7c57d;" aria-label="Sélectionner Or Jaune" role="radio" aria-checked="false"><span class="visually-hidden">Or Jaune</span></button>
+                            <button class="swatch" data-value="Or Rose" style="--swatch-color: #d9a7a0;" aria-label="Sélectionner Or Rose" role="radio" aria-checked="false"><span class="visually-hidden">Or Rose</span></button>
+                            <button class="swatch" data-value="Cadran Bleu" style="--swatch-color: #2a4a6d;" aria-label="Sélectionner Cadran Bleu" role="radio" aria-checked="false"><span class="visually-hidden">Cadran Bleu</span></button>
+                        </div>
+                    </div>
+                </div>
+
+                 <div class="product-quantity">
+                    <label for="quantity" class="variant-label">Quantité</label>
+                    <div class="quantity-selector">
+                        <button type="button" class="quantity-down" aria-label="Diminuer quantité">-</button>
+                        <input type="number" id="quantity" name="quantity" value="1" min="1" max="5" aria-label="Quantité du produit">
+                        <button type="button" class="quantity-up" aria-label="Augmenter quantité">+</button>
+                    </div>
+                </div>
+
+                <div class="product-actions">
+                    <button type="submit" class="action-button add-to-cart-btn">
+                        <i class="fa-solid fa-shopping-bag"></i> Ajouter au Panier
+                    </button>
+                    <button type="button" class="action-button wishlist-btn">
+                        <i class="fa-regular fa-gem"></i> Ajouter à ma Sélection
+                    </button>
+                </div>
+
+                <div class="trust-info">
+                    <div class="trust-item"><i class="fa-solid fa-certificate"></i> Mouvement Suisse Certifié</div>
+                    <div class="trust-item"><i class="fa-solid fa-shield-alt"></i> Paiement Sécurisé</div>
+                    <div class="trust-item"><i class="fa-solid fa-box"></i> Livraison Offerte & Assurée</div>
+                    <div class="trust-item"><i class="fa-solid fa-calendar-check"></i> Garantie Internationale 5 Ans</div>
+                </div>
+
+                 <div class="social-share">
+                     <p>Partager cette pièce :</p>
+                     <div class="social-links">
+                        <a href="#" aria-label="Partager sur Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" aria-label="Partager sur Pinterest"><i class="fab fa-pinterest-p"></i></a>
+                        <a href="#" aria-label="Partager sur Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" aria-label="Partager par Email"><i class="fas fa-envelope"></i></a>
+                    </div>
+                 </div>
+            </section>
         </main>
-        <!-- Footer -->
-        <footer data-scroll-section> <p>&copy; 2024 Thiméo Nguyen. L'art visuel redéfini.</p> </footer>
-    </div> <!-- Fin [data-scroll-container] -->
 
-    <!-- GSAP Core & ScrollTrigger Plugin -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
-    <!-- Locomotive Scroll JS -->
-    <script src="https://cdn.jsdelivr.net/npm/locomotive-scroll@4.1.4/dist/locomotive-scroll.min.js"></script>
+        <!-- Section Détails Produit (Onglets) -->
+        <section class="product-details-section">
+             <nav class="tabs-nav" role="tablist" aria-label="Détails du Produit">
+                <button class="tab-button active" role="tab" aria-selected="true" aria-controls="description-tab" id="description-btn">Description</button>
+                <button class="tab-button" role="tab" aria-selected="false" aria-controls="specs-tab" id="specs-btn">Spécifications</button>
+                <button class="tab-button" role="tab" aria-selected="false" aria-controls="reviews-tab" id="reviews-btn">Avis Clients (38)</button>
+                <button class="tab-button" role="tab" aria-selected="false" aria-controls="care-tab" id="care-btn">Entretien</button>
+             </nav>
+            <div class="tab-content active" id="description-tab" role="tabpanel" aria-labelledby="description-btn"><h3>L'Art de la Précision</h3><p>Le Chronographe Élégance Automatique incarne la quintessence du savoir-faire horloger suisse. Son mouvement automatique, visible à travers un fond saphir, bat au rythme de la tradition et de l'innovation. Le cadran soleillé, orné d'index appliqués à la main, offre une lisibilité parfaite et un raffinement intemporel.</p><p>Conçu pour les connaisseurs exigeants, ce garde-temps allie performance chronométrique et design sophistiqué. Chaque détail, du polissage du boîtier à la finition du bracelet, témoigne d'une quête incessante de perfection.</p><ul><li>Mouvement chronographe automatique manufacture Calibre EH-02.</li><li>Boîtier en acier 316L aux finitions polies et satinées.</li><li>Verre saphir bombé avec traitement anti-reflets multicouches.</li><li>Cadran argenté soleillé avec compteurs azurés.</li><li>Étanchéité garantie jusqu'à 100 mètres.</li></ul></div>
+            <div class="tab-content" id="specs-tab" role="tabpanel" aria-labelledby="specs-btn"><h3>Caractéristiques Techniques</h3><ul><li><strong>Référence :</strong> EC-AUTO-CH-S01</li><li><strong>Mouvement :</strong> Calibre EH-02 Automatique, Certifié COSC</li><li><strong>Fonctions :</strong> Heures, Minutes, Secondes, Date, Chronographe</li><li><strong>Réserve de Marche :</strong> Environ 60 heures</li><li><strong>Boîtier :</strong> Acier inoxydable 316L, Diamètre 41mm, Épaisseur 13.5mm</li><li><strong>Cadran :</strong> Argenté soleillé, Index appliqués Super-LumiNova®</li><li><strong>Verre :</strong> Saphir bombé, traitement anti-reflets</li><li><strong>Fond :</strong> Vissé avec verre saphir</li><li><strong>Étanchéité :</strong> 10 ATM (100 mètres)</li><li><strong>Bracelet :</strong> Compatible avec bracelets 20mm (vendu séparément ou configuré)</li><li><strong>Entrecorne :</strong> 20mm</li></ul></div>
+            <div class="tab-content" id="reviews-tab" role="tabpanel" aria-labelledby="reviews-btn"><h3>Avis de nos Clients</h3><p>Découvrez l'expérience Éclat Horloger à travers leurs mots.</p><div class="review-summary" style="margin-bottom: 20px;"><p><strong>Alexandre P.</strong> - <span class="stars" style="font-size: 0.9em;"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></span><br>Une montre magnifique, les finitions sont exceptionnelles. Le mouvement est d'une précision redoutable. Très satisfait de mon acquisition.</p><hr style="margin: 20px 0; border: none; border-top: 1px solid var(--color-border-subtle);"><p><strong>Sophie L.</strong> - <span class="stars" style="font-size: 0.9em;"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-regular fa-star"></i></span><br>Très belle pièce horlogère. Le service client a été parfait. Un peu épaisse peut-être, mais élégante.</p><hr style="margin: 20px 0; border: none; border-top: 1px solid var(--color-border-subtle);"><a href="#">Lire les 38 avis...</a></div></div>
+            <div class="tab-content" id="care-tab" role="tabpanel" aria-labelledby="care-btn"><h3>Conseils d'Entretien</h3><p>Pour préserver la beauté et la précision de votre Chronographe Élégance :</p><ul><li>Évitez les chocs thermiques importants et les champs magnétiques puissants.</li><li>Nettoyez régulièrement le boîtier avec une brosse douce et de l'eau savonneuse tiède. Rincez à l'eau claire et séchez avec un chiffon doux.</li><li>Faites vérifier l'étanchéité de votre montre tous les 2 ans par un centre de service agréé Éclat Horloger.</li><li>Une révision complète du mouvement est recommandée tous les 5 à 7 ans pour garantir sa longévité et sa performance.</li></ul></div>
+        </section>
 
-    <script>
-    document.addEventListener('DOMContentLoaded', () => {
+        <!-- Section Produits Connexes -->
+        <section class="related-products-section">
+            <div class="container">
+                <h2>Vous Pourriez Également Apprécier</h2>
+                <div class="related-products-grid">
+                    <a href="#" class="related-product-card"><div class="image-container"><img src="https://picsum.photos/300/300?random=10&category=watch" alt="Montre Classique Automatique" loading="lazy"></div><div class="related-product-info"><h3 class="related-product-title">Classique Automatique 3 Aiguilles</h3><p class="related-product-price">2 500,00 €</p><span class="view-details-link">Voir Détails</span></div></a>
+                    <a href="#" class="related-product-card"><div class="image-container"><img src="https://picsum.photos/300/300?random=11&category=timepiece" alt="Montre Plongée Professionnelle" loading="lazy"></div><div class="related-product-info"><h3 class="related-product-title">Abysse Diver 300M</h3><p class="related-product-price">3 200,00 €</p><span class="view-details-link">Voir Détails</span></div></a>
+                    <a href="#" class="related-product-card"><div class="image-container"><img src="https://picsum.photos/300/300?random=12&category=jewelry" alt="Montre Femme Joaillerie" loading="lazy"></div><div class="related-product-info"><h3 class="related-product-title">Étoile Céleste Quartz Diamants</h3><p class="related-product-price">4 900,00 €</p><span class="view-details-link">Voir Détails</span></div></a>
+                    <a href="#" class="related-product-card"><div class="image-container"><img src="https://picsum.photos/300/300?random=13&category=accessories" alt="Remontoir de Montre" loading="lazy"></div><div class="related-product-info"><h3 class="related-product-title">Écrin Remontoir Duo Bois Précieux</h3><p class="related-product-price">450,00 €</p><span class="view-details-link">Voir Détails</span></div></a>
+                </div>
+            </div>
+        </section>
 
-        // --- 0. Configuration Globale ---
-        gsap.registerPlugin(ScrollTrigger);
-        let locoScroll; let locomotiveInitialized = false;
+    </div> <!-- /.container -->
 
-        // --- 1. Initialisation Locomotive Scroll ---
-        const scrollContainer = document.querySelector('[data-scroll-container]');
-        if (!scrollContainer) { console.error("Locomotive Scroll container '[data-scroll-container]' not found."); }
-        else { /* ... (code init Locomotive inchangé) ... */ try { locoScroll = new LocomotiveScroll({ el: scrollContainer, smooth: true, tablet: { smooth: true }, smartphone: { smooth: true }, lerp: 0.08, multiplier: 1.1 }); locomotiveInitialized = true; new ResizeObserver(() => locoScroll.update()).observe(scrollContainer); locoScroll.on('scroll', ScrollTrigger.update); ScrollTrigger.scrollerProxy(scrollContainer, { scrollTop(value) { return arguments.length ? locoScroll.scrollTo(value, { duration: 0, disableLerp: true }) : locoScroll.scroll.instance.scroll.y; }, getBoundingClientRect() { return { top: 0, left: 0, width: window.innerWidth, height: window.innerHeight }; }, pinType: scrollContainer.style.transform ? "transform" : "fixed" }); ScrollTrigger.addEventListener('refresh', () => locoScroll.update()); ScrollTrigger.refresh(); } catch (error) { console.error("Error initializing Locomotive Scroll:", error); } }
-
-        // --- 2. Préchargeur ---
-        const preloader = document.getElementById('preloader');
-        const loaderLine = preloader?.querySelector('.loader-line');
-        const loaderMaskLeft = preloader?.querySelector('.loader-mask-left');
-        const loaderMaskRight = preloader?.querySelector('.loader-mask-right');
-
-        function hidePreloaderAndStart() {
-             const startDelay = 0.1;
-             if(preloader && loaderLine && loaderMaskLeft && loaderMaskRight) {
-                 gsap.to([loaderMaskLeft, loaderMaskRight], {
-                    scaleX: 1, duration: 0.6, ease: 'power2.inOut', delay: 0.1,
-                    onComplete: () => {
-                         gsap.to(preloader, {
-                             opacity: 0, visibility: 'hidden', duration: 0.6, ease: 'power1.out',
-                             onComplete: () => {
-                                 if (preloader) preloader.remove();
-                                 document.body.classList.remove('no-scroll');
-                                  gsap.delayedCall(startDelay, () => {
-                                     if (locomotiveInitialized) { locoScroll.start(); }
-                                     runEntryAnimations();
-                                     if (typeof ScrollTrigger !== 'undefined') { ScrollTrigger.refresh(); }
-                                  });
-                             }
-                         });
-                    }
-                 });
-            } else { /* ... (fallback inchangé) ... */ document.body.classList.remove('no-scroll'); if (locomotiveInitialized) locoScroll.start(); runEntryAnimations(); if (typeof ScrollTrigger !== 'undefined') ScrollTrigger.refresh(); }
-        }
-
-         if(preloader && loaderLine && loaderMaskLeft && loaderMaskRight) {
-              gsap.to(loaderLine, {
-                  scaleX: 1, duration: 1.0, ease: 'power2.out',
-                  onComplete: hidePreloaderAndStart
-              });
-             document.body.classList.add('no-scroll');
-             if (locomotiveInitialized) locoScroll.stop();
-         } else { console.warn("Preloader elements not found."); hidePreloaderAndStart(); }
-
-
-        // --- 3. Curseur Personnalisé ---
-        const cursorElement = document.querySelector('.cursor'); const cursorDot = document.querySelector('.cursor-dot'); const cursorCircle = document.querySelector('.cursor-circle'); let mouseX = 0, mouseY = 0, circleX = 0, circleY = 0, dotX = 0, dotY = 0; const lerpFactor = 0.1; let cursorAnimationFrameId; const supportsHover = window.matchMedia('(hover: hover)').matches; if (supportsHover && cursorElement && cursorDot && cursorCircle) { /* ... (code curseur inchangé) ... */ cursorElement.classList.add('visible'); document.body.classList.add('custom-cursor-active'); window.addEventListener('mousemove', (e) => { mouseX = e.clientX; mouseY = e.clientY; if (circleX === 0) { circleX = mouseX; circleY = mouseY; } }); function animateCursor() { dotX = mouseX; dotY = mouseY; circleX += (mouseX - circleX) * lerpFactor; circleY += (mouseY - circleY) * lerpFactor; cursorDot.style.transform = `translate(${dotX}px, ${dotY}px) translate(-50%, -50%)`; cursorCircle.style.transform = `translate(${circleX}px, ${circleY}px) translate(-50%, -50%)`; cursorAnimationFrameId = requestAnimationFrame(animateCursor); } animateCursor(); document.querySelectorAll('.cursor-hover').forEach(target => { target.addEventListener('mouseenter', () => { document.body.classList.add('cursor-hover'); if (target.dataset.targetCursor === 'text') { document.body.classList.add('cursor-text-hover'); } }); target.addEventListener('mouseleave', () => { document.body.classList.remove('cursor-hover'); document.body.classList.remove('cursor-text-hover'); }); }); } else { console.log("Custom cursor not initialized."); document.body.classList.remove('custom-cursor-active'); if(cursorElement) cursorElement.style.display = 'none'; }
-
-        // --- 4. Header Scroll & Menu Mobile ---
-        const header = document.getElementById('mainHeader'); let lastScrollY = 0; function handleScroll(currentScrollY) { const direction = currentScrollY > lastScrollY ? 'down' : 'up'; if (header) { if (currentScrollY > 50) { header.classList.add('scrolled'); } else { header.classList.remove('scrolled'); } if (currentScrollY > 200 && direction === 'down') { header.classList.add('hidden'); } else if (direction === 'up' || currentScrollY <= 200) { header.classList.remove('hidden'); } } lastScrollY = currentScrollY; updateActiveNavLinkOnScroll(currentScrollY); } if (locomotiveInitialized) { locoScroll.on('scroll', (instance) => { if (instance?.scroll) handleScroll(instance.scroll.y); }); } else { window.addEventListener('scroll', () => handleScroll(window.scrollY)); } const menuToggle = document.getElementById('menuToggle'); const mainNav = document.getElementById('mainNav'); if (menuToggle && mainNav) { menuToggle.addEventListener('click', () => { const isActive = mainNav.classList.toggle('active'); menuToggle.classList.toggle('active'); menuToggle.setAttribute('aria-expanded', isActive); if (locomotiveInitialized) { if (isActive) locoScroll.stop(); else locoScroll.start(); } else { document.body.style.overflow = isActive ? 'hidden' : ''; } }); mainNav.querySelectorAll('a').forEach(link => { link.addEventListener('click', (e) => { const targetId = link.getAttribute('href'); mainNav.classList.remove('active'); menuToggle.classList.remove('active'); menuToggle.setAttribute('aria-expanded', 'false'); if (locomotiveInitialized) locoScroll.start(); else document.body.style.overflow = ''; if(targetId && targetId.startsWith('#')) { e.preventDefault(); const targetElement = document.querySelector(targetId); if (!targetElement) return; if (locomotiveInitialized) { locoScroll.scrollTo(targetElement, { offset: -80, duration: 1200, easing: [0.25, 0.00, 0.35, 1.00] }); } else { targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' }); } } }); }); }
-
-        // --- Bouton Hero ---
-        const heroCtaButton = document.getElementById('hero-cta-button'); if (heroCtaButton) { heroCtaButton.addEventListener('click', (e) => { e.preventDefault(); const targetElement = document.querySelector('#portfolio'); if (!targetElement) return; if (locomotiveInitialized) { locoScroll.scrollTo(targetElement, { offset: -80, duration: 1500, easing: [0.25, 0.00, 0.35, 1.00] }); } else { targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' }); } }); }
-
-        // --- 5. Navigation Active ---
-        const sections = document.querySelectorAll('section[id]'); const mainNavLinks = document.querySelectorAll('.main-nav a'); function updateActiveNavLinkOnScroll(scrollY) { let currentSectionId = null; const scrollThreshold = (header?.offsetHeight || 70) + 150; sections.forEach(section => { if (scrollY >= section.offsetTop - scrollThreshold) { currentSectionId = section.id; } }); if (sections.length > 0 && scrollY < sections[0].offsetTop - scrollThreshold) { currentSectionId = 'accueil'; } currentSectionId = currentSectionId || (sections.length > 0 ? sections[sections.length - 1].id : 'accueil'); mainNavLinks.forEach(link => { link.classList.remove('active'); const linkHref = link.getAttribute('href'); if (linkHref === `#${currentSectionId}`) { link.classList.add('active'); } }); } setTimeout(() => { const initialY = locomotiveInitialized ? locoScroll.scroll.instance.scroll.y : window.scrollY; updateActiveNavLinkOnScroll(initialY); }, 200);
-
-        // --- 6. Animations GSAP ---
-        function runEntryAnimations() { /* ... (code animations inchangé) ... */ if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') { console.error("GSAP or ScrollTrigger not loaded."); return; } const scrollerTarget = locomotiveInitialized ? scrollContainer : window; const heroTitle = document.querySelector('[data-hero-title]'); if (heroTitle) { const words = heroTitle.querySelectorAll('.word-wrapper'); if (words.length > 0) { gsap.to(words, { y: '0%', stagger: 0.1, duration: 1.2, ease: 'expo.out', delay: 0.1 }); } else { gsap.from(heroTitle, { opacity: 0, y: 30, duration: 1, ease: 'power3.out', delay: 0.1 }); } } gsap.to("[data-hero-subtitle]", { opacity: 1, y: 0, duration: 1, ease: 'power3.out', delay: 0.5 }); gsap.to("[data-hero-desc]", { opacity: 1, y: 0, duration: 1, ease: 'power3.out', delay: 0.7 }); gsap.to(".hero-cta-wrapper", { opacity: 1, y: 0, duration: 1, ease: 'power3.out', delay: 0.9 }); gsap.utils.toArray('[data-section-title]').forEach(title => { gsap.from(title, { scrollTrigger: { trigger: title, scroller: scrollerTarget, start: 'top 85%', toggleActions: 'play none none none' }, opacity: 0, y: 50, duration: 1, ease: 'power3.out' }); }); gsap.utils.toArray('[data-portfolio-item]').forEach((item, index) => { gsap.to(item, { scrollTrigger: { trigger: item, scroller: scrollerTarget, start: 'top 80%', toggleActions: 'play none none none' }, opacity: 1, y: 0, duration: 0.8, ease: 'power3.out', delay: index * 0.05 }); }); gsap.utils.toArray('[data-parcours-item]').forEach((item, index) => { gsap.to(item, { scrollTrigger: { trigger: item, scroller: scrollerTarget, start: 'top 80%', toggleActions: 'play none none none' }, opacity: 1, x: 0, duration: 1, ease: 'power3.out' }); }); gsap.utils.toArray('[data-contact-item]').forEach((item, index) => { gsap.to(item, { scrollTrigger: { trigger: item, scroller: scrollerTarget, start: 'top 75%', toggleActions: 'play none none none' }, opacity: 1, y: 0, duration: 1, ease: 'power3.out', delay: index * 0.1 }); }); }
-    });
-    </script>
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="container">
+            <!-- UPDATED Footer Grid for Accordion -->
+            <div class="footer-grid">
+                <div class="footer-column">
+                    <!-- Desktop H4 -->
+                    <h4>Collections</h4>
+                    <!-- Mobile Toggle Button -->
+                    <button class="footer-toggle" aria-expanded="false" aria-controls="footer-col-collections">
+                        Collections <i class="fas fa-chevron-down" aria-hidden="true"></i>
+                    </button>
+                    <ul id="footer-col-collections">
+                        <li><a href="#">Chronographes</a></li>
+                        <li><a href="#">Classiques</a></li>
+                        <li><a href="#">Plongée</a></li>
+                        <li><a href="#">Joaillerie Femme</a></li>
+                        <li><a href="#">Nouveautés</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Services</h4>
+                     <button class="footer-toggle" aria-expanded="false" aria-controls="footer-col-services">
+                        Services <i class="fas fa-chevron-down" aria-hidden="true"></i>
+                    </button>
+                    <ul id="footer-col-services">
+                        <li><a href="#">Trouver une Boutique</a></li>
+                        <li><a href="#">Prendre Rendez-vous</a></li>
+                        <li><a href="#">Service Client</a></li>
+                        <li><a href="#">Entretien & Réparation</a></li>
+                        <li><a href="#">Garantie</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                     <h4>La Maison</h4>
+                     <button class="footer-toggle" aria-expanded="false" aria-controls="footer-col-maison">
+                        La Maison <i class="fas fa-chevron-down" aria-hidden="true"></i>
+                    </button>
+                    <ul id="footer-col-maison">
+                        <li><a href="#">Notre Histoire</a></li>
+                        <li><a href="#">Savoir-Faire</a></li>
+                        <li><a href="#">Engagements Durables</a></li>
+                        <li><a href="#">Carrières</a></li>
+                        <li><a href="#">Presse</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                     <h4>Suivez-Nous</h4>
+                     <button class="footer-toggle" aria-expanded="false" aria-controls="footer-col-social">
+                        Suivez-Nous <i class="fas fa-chevron-down" aria-hidden="true"></i>
+                    </button>
+                    <ul id="footer-col-social">
+                        <li><a href="#">Instagram</a></li>
+                        <li><a href="#">Facebook</a></li>
+                        <li><a href="#">Pinterest</a></li>
+                        <li><a href="#">LinkedIn</a></li>
+                        <li><a href="#">S'inscrire à la Newsletter</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom"> © 2025 Thiméo Nguyen. Tous droits réservés. | <a href="#">Mentions Légales</a> | <a href="#">Politique de Confidentialité</a> | <a href="#">Conditions Générales de Vente</a></div>
+        </div>
+    </footer>
 
     <script src="js/script.js"></script>
 </body>
