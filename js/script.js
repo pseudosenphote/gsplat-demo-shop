@@ -1,54 +1,3 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Thiméo Nguyen - Réalisateur</title>
-
-    <!-- Locomotive Scroll CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/locomotive-scroll@4.1.4/dist/locomotive-scroll.min.css">
-
-    <!-- Polices Google Fonts: Poppins & Playfair Display -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-
-    <link rel="stylesheet" href="css/style.css">
-</head>
-<body>
-    <!-- Conteneur principal -->
-    <div data-scroll-container>
-        <!-- Curseur, Préchargeur, Header, Main, Footer... -->
-        <!-- Le contenu HTML reste identique à la version précédente -->
-        <!-- Curseur Personnalisé -->
-        <div class="cursor"> <div class="cursor-dot"></div> <div class="cursor-circle"></div> </div>
-        <!-- Préchargeur -->
-        <div id="preloader"> <div class="loader-container"> <div class="loader-line"></div> <div class="loader-mask loader-mask-left"></div> <div class="loader-mask loader-mask-right"></div> </div> </div>
-        <!-- Header -->
-        <header class="main-header" id="mainHeader"> <a href="#accueil" class="logo cursor-hover" data-target-cursor="text">Thiméo</a> <nav class="main-nav" id="mainNav"> <ul> <li><a href="#accueil" class="nav-link active cursor-hover" data-target-cursor="text">Accueil</a></li> <li><a href="#portfolio" class="nav-link cursor-hover" data-target-cursor="text">Portfolio</a></li> <li><a href="#parcours" class="nav-link cursor-hover" data-target-cursor="text">Parcours</a></li> <li><a href="#contact" class="nav-link cursor-hover" data-target-cursor="text">Contact</a></li> </ul> </nav> <button class="menu-toggle cursor-hover" id="menuToggle" aria-label="Ouvrir le menu" aria-expanded="false"> <i class="fas fa-bars"></i> <i class="fas fa-times"></i> </button> </header>
-        <main>
-            <!-- Section Accueil -->
-            <section id="accueil" data-scroll-section data-persistent> <div class="container"> <h1 data-hero-title> <span class="line-wrapper"><span class="word-wrapper">Créateur</span></span> <span class="line-wrapper"><span class="word-wrapper">d'Histoires</span></span> <span class="line-wrapper"><span class="word-wrapper">Visuelles.</span></span> </h1> <p class="subtitle" data-hero-subtitle>Réalisateur // Créatif</p> <p data-hero-desc>Je traduis des visions en émotions pures, sculptant la lumière et le temps pour créer des expériences cinématographiques qui résonnent.</p> <div class="hero-cta-wrapper" data-hero-cta> <a href="#portfolio" id="hero-cta-button" class="cta-button cursor-hover">Explorer les Projets</a> </div> </div> </section>
-            <!-- Section Portfolio -->
-            <section id="portfolio" data-scroll-section> <div class="container"> <h2 data-section-title>Œuvres Récentes</h2> <div class="portfolio-grid"> <!-- Projet 1 --> <div class="portfolio-item cursor-hover" data-portfolio-item> <div class="portfolio-media-wrapper"> <div class="portfolio-media"> <iframe src="https://player.vimeo.com/video/137804966?h=34e6f337ec&color=00e0c6&title=0&byline=0&portrait=0&background=1" frameborder="0" allow="autoplay; fullscreen; picture-in-picture"></iframe> </div> </div> <div class="portfolio-info"> <h3><a href="#" class="link-underline cursor-hover" data-target-cursor="text">Dawn of the Cookies</a></h3> <p>Un (très) court-métrage réalisé en un weekend narrant l'histoire d'une mysterieuse distribueuse de cookies...</p> <div class="portfolio-meta"><span class="date">Automne 2023</span></div> </div> </div> <!-- Projet 2 --> <div class="portfolio-item cursor-hover" data-portfolio-item> <div class="portfolio-media-wrapper"> <div class="portfolio-media"> <img src="https://picsum.photos/seed/projetElegant/800/480" alt="Projet Élégant" loading="lazy"> </div> </div> <div class="portfolio-info"> <h3><a href="#" class="link-underline cursor-hover" data-target-cursor="text">Élégance Capturée</a></h3> <p>Direction photo pour une campagne publicitaire de haute couture, jouant sur les contrastes et textures.</p> <div class="portfolio-meta"><span class="date">Été 2023</span></div> </div> </div> <!-- Projet 3 --> <div class="portfolio-item cursor-hover" data-portfolio-item> <div class="portfolio-media-wrapper"> <div class="portfolio-media"> <img src="https://picsum.photos/seed/projetSauvage/800/480" alt="Projet Sauvage" loading="lazy"> </div> </div> <div class="portfolio-info"> <h3><a href="#" class="link-underline cursor-hover" data-target-cursor="text">Instinct Sauvage</a></h3> <p>Images documentaires immersives au cœur de paysages indomptés, révélant une beauté brute.</p> <div class="portfolio-meta"><span class="date">Printemps 2023</span></div> </div> </div> <!-- Projet 4 --> <div class="portfolio-item cursor-hover" data-portfolio-item> <div class="portfolio-media-wrapper"> <div class="portfolio-media"> <iframe src="https://player.vimeo.com/video/82094973?h=3a50f8665b&color=00e0c6&title=0&byline=0&portrait=0&background=1" frameborder="0" allow="autoplay; fullscreen; picture-in-picture"></iframe> </div> </div> <div class="portfolio-info"> <h3><a href="#" class="link-underline cursor-hover" data-target-cursor="text">Rêverie Sonore</a></h3> <p>Clip musical pour un artiste émergent, explorant des mondes surréalistes et mélancoliques.</p> <div class="portfolio-meta"><span class="date">Hiver 2022</span></div> </div> </div> </div> </div> </section>
-            <!-- Section Parcours -->
-            <section id="parcours" data-scroll-section> <div class="container"> <h2 data-section-title>Mon Itinéraire</h2> <div class="parcours-timeline"> <!-- Entrée 1 --> <div class="parcours-entry-wrapper" data-parcours-item> <div class="parcours-entry"> <h3><i class="fas fa-user-graduate"></i>École Supérieure de Cinéma</h3> <span class="date-location">2016 - 2019 | CinéSup, Paris</span> <p>Formation intensive en réalisation, scénario et techniques cinématographiques. Film de diplôme sélectionné dans 3 festivals.</p> </div> </div> <!-- Entrée 2 --> <div class="parcours-entry-wrapper" data-parcours-item> <div class="parcours-entry"> <h3><i class="fas fa-hands-helping"></i>Assistant Réalisateur Polyvalent</h3> <span class="date-location">2019 - 2021 | Diverses Productions</span> <p>Collaboration sur longs métrages indépendants, publicités TV et contenus web. Maîtrise de la logistique de plateau.</p> </div> </div> <!-- Entrée 3 --> <div class="parcours-entry-wrapper" data-parcours-item> <div class="parcours-entry"> <h3><i class="fas fa-video-camera"></i>Réalisateur & DP Freelance</h3> <span class="date-location">Depuis 2021 | Indépendant</span> <p>Développement de projets personnels et commandes clients. Spécialisation en narration visuelle et direction de la photographie.</p> </div> </div> <!-- Entrée 4 --> <div class="parcours-entry-wrapper" data-parcours-item> <div class="parcours-entry"> <h3><i class="fas fa-search"></i>Exploration Créative Continue</h3> <span class="date-location">Permanent | Workshops & Veille</span> <p>Apprentissage constant des nouvelles technologies (caméras, IA en post-prod) et exploration de formes narratives innovantes.</p> </div> </div> </div> </div> </section>
-            <!-- Section Contact -->
-            <section id="contact" data-scroll-section> <div class="container"> <h2 data-section-title>Parlons Cinéma</h2> <div class="contact-container"> <div class="contact-info" data-contact-item> <h3>Une idée ? Un projet ?</h3> <p>Que ce soit pour une collaboration ambitieuse ou une simple discussion autour d'une passion commune, ma porte (et ma boîte mail) est toujours ouverte.</p> <a href="mailto:thimeo.nguyen.vision@email.pro" class="link-underline cursor-hover" data-target-cursor="text"><i class="fas fa-paper-plane"></i> thimeo.nguyen.vision@email.pro</a> <a href="tel:+33698765432" class="link-underline cursor-hover" data-target-cursor="text"><i class="fas fa-mobile-alt"></i> +33 6 98 76 54 32</a> <div class="social-links"> <a href="#" target="_blank" aria-label="Vimeo" title="Vimeo" class="cursor-hover"><i class="fab fa-vimeo-v"></i></a> <a href="#" target="_blank" aria-label="Instagram" title="Instagram" class="cursor-hover"><i class="fab fa-instagram"></i></a> <a href="#" target="_blank" aria-label="LinkedIn" title="LinkedIn" class="cursor-hover"><i class="fab fa-linkedin-in"></i></a> </div> </div> <div class="contact-form" data-contact-item> <h3>Envoyez votre message</h3> <form action="#" method="post"> <div class="form-group"> <input type="text" name="name" placeholder="Nom & Prénom *" required class="cursor-hover" data-target-cursor="text"> </div> <div class="form-group"> <input type="email" name="email" placeholder="Adresse Email *" required class="cursor-hover" data-target-cursor="text"> </div> <div class="form-group"> <input type="text" name="subject" placeholder="Sujet *" required class="cursor-hover" data-target-cursor="text"> </div> <div class="form-group"> <textarea name="message" rows="6" placeholder="Votre message détaillé ici... *" required class="cursor-hover" data-target-cursor="text"></textarea> </div> <button type="submit" class="cta-button cursor-hover">Envoyer</button> </form> </div> </div> </div> </section>
-        </main>
-        <!-- Footer -->
-        <footer data-scroll-section> <p>&copy; 2024 Thiméo Nguyen. L'art visuel redéfini.</p> </footer>
-    </div> <!-- Fin [data-scroll-container] -->
-
-    <!-- GSAP Core & ScrollTrigger Plugin -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
-    <!-- Locomotive Scroll JS -->
-    <script src="https://cdn.jsdelivr.net/npm/locomotive-scroll@4.1.4/dist/locomotive-scroll.min.js"></script>
-
-    <script>
     document.addEventListener('DOMContentLoaded', () => {
 
         // --- 0. Configuration Globale ---
@@ -114,8 +63,3 @@
         // --- 6. Animations GSAP ---
         function runEntryAnimations() { /* ... (code animations inchangé) ... */ if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') { console.error("GSAP or ScrollTrigger not loaded."); return; } const scrollerTarget = locomotiveInitialized ? scrollContainer : window; const heroTitle = document.querySelector('[data-hero-title]'); if (heroTitle) { const words = heroTitle.querySelectorAll('.word-wrapper'); if (words.length > 0) { gsap.to(words, { y: '0%', stagger: 0.1, duration: 1.2, ease: 'expo.out', delay: 0.1 }); } else { gsap.from(heroTitle, { opacity: 0, y: 30, duration: 1, ease: 'power3.out', delay: 0.1 }); } } gsap.to("[data-hero-subtitle]", { opacity: 1, y: 0, duration: 1, ease: 'power3.out', delay: 0.5 }); gsap.to("[data-hero-desc]", { opacity: 1, y: 0, duration: 1, ease: 'power3.out', delay: 0.7 }); gsap.to(".hero-cta-wrapper", { opacity: 1, y: 0, duration: 1, ease: 'power3.out', delay: 0.9 }); gsap.utils.toArray('[data-section-title]').forEach(title => { gsap.from(title, { scrollTrigger: { trigger: title, scroller: scrollerTarget, start: 'top 85%', toggleActions: 'play none none none' }, opacity: 0, y: 50, duration: 1, ease: 'power3.out' }); }); gsap.utils.toArray('[data-portfolio-item]').forEach((item, index) => { gsap.to(item, { scrollTrigger: { trigger: item, scroller: scrollerTarget, start: 'top 80%', toggleActions: 'play none none none' }, opacity: 1, y: 0, duration: 0.8, ease: 'power3.out', delay: index * 0.05 }); }); gsap.utils.toArray('[data-parcours-item]').forEach((item, index) => { gsap.to(item, { scrollTrigger: { trigger: item, scroller: scrollerTarget, start: 'top 80%', toggleActions: 'play none none none' }, opacity: 1, x: 0, duration: 1, ease: 'power3.out' }); }); gsap.utils.toArray('[data-contact-item]').forEach((item, index) => { gsap.to(item, { scrollTrigger: { trigger: item, scroller: scrollerTarget, start: 'top 75%', toggleActions: 'play none none none' }, opacity: 1, y: 0, duration: 1, ease: 'power3.out', delay: index * 0.1 }); }); }
     });
-    </script>
-
-    <script src="js/script.js"></script>
-</body>
-</html>
