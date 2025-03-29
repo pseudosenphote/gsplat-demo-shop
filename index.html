@@ -9,7 +9,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-    <!-- CSS Intégré (Identique à la version précédente, sauf si des ajustements mineurs sont nécessaires pour le loading indicator) -->
+    <!-- CSS Intégré -->
     <style>
         :root {
             --color-text: #333;
@@ -52,12 +52,45 @@
         }
 
         /* --- Header & Breadcrumbs --- */
-        .site-header { background-color: var(--color-surface); padding: 25px 0; border-bottom: 1px solid var(--color-border); margin-bottom: 40px; }
-        .site-header .container { display: flex; justify-content: space-between; align-items: center; }
-        .logo { font-family: var(--font-secondary); font-size: 1.9em; font-weight: 700; color: var(--color-dark); letter-spacing: 1.5px;}
-        .main-nav ul { list-style: none; display: flex; gap: 35px; }
-        .main-nav a { color: var(--color-text-muted); font-weight: 400; font-size: 0.9em; letter-spacing: 1px; text-transform: uppercase; transition: color var(--transition-speed) ease;}
-        .main-nav a:hover { color: var(--color-dark); }
+        .site-header {
+            background-color: var(--color-surface);
+            padding: 25px 0;
+            border-bottom: 1px solid var(--color-border);
+            margin-bottom: 40px;
+            position: relative; /* Added for mobile nav positioning */
+        }
+        .site-header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            font-family: var(--font-secondary);
+            font-size: 1.9em;
+            font-weight: 700;
+            color: var(--color-dark);
+            letter-spacing: 1.5px;
+        }
+        .main-nav ul {
+            list-style: none;
+            display: flex;
+            gap: 35px;
+            margin: 0; /* Ensure no default margin */
+            padding: 0; /* Ensure no default padding */
+        }
+        .main-nav a {
+            color: var(--color-text-muted);
+            font-weight: 400;
+            font-size: 0.9em;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: color var(--transition-speed) ease;
+            display: block; /* Helps with alignment and padding */
+            padding: 5px 0; /* Adjust padding as needed */
+        }
+        .main-nav a:hover {
+            color: var(--color-dark);
+        }
 
         .breadcrumbs { padding: 25px 0; font-size: 0.85em; color: var(--color-text-muted); }
         .breadcrumbs ol { list-style: none; display: flex; flex-wrap: wrap; gap: 8px 12px; }
@@ -82,32 +115,11 @@
         .carousel-slide img { background-color: var(--color-surface-alt); }
 
         /* Loading indicator spécifique au splat */
-        .carousel-slide[data-type="splat"] .loading-indicator {
-            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            background-color: rgba(0, 0, 0, 0.7); color: white; padding: 10px 20px;
-            border-radius: var(--border-radius); z-index: 5;
-            /* Changé : display none par défaut, géré par JS */
-            opacity: 0; display: none;
-            transition: opacity var(--transition-speed) ease;
-            font-size: 0.85em; font-weight: 400;
-            pointer-events: none; /* Ne pas interférer avec l'iframe */
-        }
-        /* Style quand visible (ajouté par JS) */
-        .carousel-slide[data-type="splat"] .loading-indicator.visible {
-             display: block;
-             opacity: 1;
-        }
-         /* Masqué quand l'iframe est chargé (classe ajoutée par JS sur l'iframe) */
-        .carousel-slide[data-type="splat"] iframe.loaded + .loading-indicator {
-             opacity: 0;
-             /* On peut laisser display block et juste jouer sur l'opacité */
-             /* Ou transitionner display : none après la fin de la transition d'opacité */
-             transition: opacity var(--transition-speed) ease, display 0s linear var(--transition-speed);
-             display: none;
-        }
+        .carousel-slide[data-type="splat"] .loading-indicator { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: rgba(0, 0, 0, 0.7); color: white; padding: 10px 20px; border-radius: var(--border-radius); z-index: 5; opacity: 0; display: none; transition: opacity var(--transition-speed) ease; font-size: 0.85em; font-weight: 400; pointer-events: none; }
+        .carousel-slide[data-type="splat"] .loading-indicator.visible { display: block; opacity: 1; }
+        .carousel-slide[data-type="splat"] iframe.loaded + .loading-indicator { opacity: 0; transition: opacity var(--transition-speed) ease, display 0s linear var(--transition-speed); display: none; }
 
-
-        /* Contrôles Carrousel (CSS corrigé précédemment) */
+        /* Contrôles Carrousel */
         .carousel-control { position: absolute; top: 50%; transform: translateY(-50%); background-color: rgba(255, 255, 255, 0.8); color: var(--color-dark); border: none; padding: 0; font-size: 16px; cursor: pointer; border-radius: 50%; width: 42px; height: 42px; display: flex; align-items: center; justify-content: center; z-index: 10; opacity: 0; pointer-events: none; transition: opacity var(--transition-speed) ease, background-color var(--transition-speed) ease, box-shadow var(--transition-speed) ease, transform var(--transition-speed) ease; box-shadow: var(--shadow-subtle); }
         .carousel:hover .carousel-control { opacity: 1; pointer-events: auto; }
         .carousel:hover .carousel-control:not(:disabled):hover { background-color: var(--color-surface); box-shadow: 0 4px 10px rgba(0,0,0,0.1); transform: translateY(-50%) scale(1.05); }
@@ -125,7 +137,7 @@
         .thumbnail-item[data-type="splat"].active { border-color: var(--color-primary); background-color: #efe2cc; box-shadow: 0 0 0 2px var(--color-primary); }
         .thumbnail-item[data-type="splat"] i { font-size: 1.8em; margin-bottom: 4px; display: block; color: var(--color-primary); }
 
-        /* --- Section Infos Produit (Espacement réduit) --- */
+        /* --- Section Infos Produit --- */
         .product-info { display: flex; flex-direction: column; gap: 18px; }
         .product-vendor { font-size: 0.85em; color: var(--color-text-muted); text-transform: uppercase; letter-spacing: 1px;}
         .product-vendor a { color: var(--color-text-muted); font-weight: 400; }
@@ -216,11 +228,190 @@
         .footer-column a:hover { color: #fff; }
         .footer-bottom { text-align: center; border-top: 1px solid #495057; padding-top: 35px; font-size: 0.85em; color: #6c757d;}
 
-        /* --- Responsive --- */
-        @media (max-width: 1200px) { .related-products-grid { grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); } }
-        @media (max-width: 1024px) { .product-page-grid { grid-template-columns: 1fr; gap: 50px; padding: 50px; } .product-title { font-size: 2.2em; } .product-price { font-size: 1.9em; } }
-        @media (max-width: 768px) { .container { padding: 0 20px; } .site-header { padding: 20px 0;} .site-header .container { flex-direction: column; gap: 20px; } .main-nav ul { gap: 25px; } .product-page-grid { padding: 35px; gap: 35px;} .product-title { font-size: 2em; } .product-price { font-size: 1.7em; } .action-button { padding: 15px 28px; font-size: 0.9em; } .carousel-control { width: 38px; height: 38px; font-size: 15px; } .carousel-control.prev { left: 15px; } .carousel-control.next { right: 15px; } .carousel-thumbnails { gap: 12px; grid-template-columns: repeat(auto-fill, minmax(65px, 1fr)); } .tabs-nav { gap: 10px; } .tab-button { font-size: 0.9em; padding: 15px 20px; } .product-details-section { padding: 40px 30px; } .related-products-grid { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 25px; } .footer-grid { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 35px; } }
-        @media (max-width: 480px) { .container { padding: 0 15px; } .logo { font-size: 1.7em; } .product-page-grid { padding: 25px; gap: 30px;} .product-title { font-size: 1.7em; } .product-price { font-size: 1.6em; } .swatch { width: 32px; height: 32px; } .quantity-selector button, .quantity-selector input { height: 36px; } .quantity-selector button { width: 36px; font-size: 0.9em;} .quantity-selector input { width: 50px; font-size: 0.9em;} .product-actions { gap: 15px; } .action-button { padding: 14px 22px; font-size: 0.85em; } .product-details-section { padding: 35px 20px; } .tab-button { padding: 12px 15px; letter-spacing: 0.8px;} .related-products-grid { grid-template-columns: 1fr 1fr; gap: 20px; } .related-product-card img { padding: 15px; } .related-product-info { padding: 20px 15px;} .related-product-title { font-size: 1em;} .related-product-price { font-size: 1.05em;} .footer-grid { grid-template-columns: 1fr; } }
+
+        /* --- Mobile Navigation (NEW) --- */
+        .mobile-nav-toggle {
+            display: none; /* Hidden by default on desktop */
+            background: none;
+            border: none;
+            color: var(--color-dark);
+            font-size: 1.8em; /* Larger tap target */
+            cursor: pointer;
+            padding: 5px;
+            z-index: 1000; /* Ensure it's above other header content */
+            line-height: 1;
+        }
+        .mobile-nav-toggle .close-icon { display: none; }
+
+        /* Styles when mobile menu is open (applied via JS by adding class 'nav-open' to header) */
+        .site-header.nav-open .mobile-nav-toggle .open-icon { display: none; }
+        .site-header.nav-open .mobile-nav-toggle .close-icon { display: block; }
+
+        .site-header.nav-open .main-nav {
+             display: block; /* Show the nav container */
+             position: absolute;
+             top: 100%; /* Position below the header */
+             left: 0;
+             right: 0;
+             background-color: var(--color-surface);
+             box-shadow: var(--shadow-soft);
+             border-top: 1px solid var(--color-border);
+             padding: 20px 0;
+             z-index: 999; /* Below toggle button but above page content */
+        }
+
+        .site-header.nav-open .main-nav ul {
+            flex-direction: column; /* Stack links vertically */
+            align-items: center; /* Center links */
+            gap: 15px; /* Space between links */
+            width: 100%;
+        }
+        .site-header.nav-open .main-nav li {
+            width: 100%;
+            text-align: center;
+        }
+        .site-header.nav-open .main-nav a {
+            display: block; /* Make link take full width */
+            padding: 10px 20px; /* Add padding for easier tapping */
+            font-size: 1em; /* Slightly larger font for mobile menu */
+            color: var(--color-dark); /* Make links darker for visibility */
+        }
+        .site-header.nav-open .main-nav a:hover {
+            background-color: var(--color-surface-alt);
+            color: var(--color-primary);
+        }
+
+
+        /* --- Responsive (REVISED) --- */
+
+        /* Tablet and Larger */
+        @media (min-width: 993px) {
+             .main-nav ul {
+                display: flex; /* Ensure flex is re-enabled */
+             }
+        }
+
+        /* Tablet Landscape & Smaller Desktops */
+        @media (max-width: 1200px) {
+            .container { max-width: 1140px; padding: 0 25px; } /* Adjust container slightly */
+            .related-products-grid { grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); }
+        }
+
+        /* Portrait Tablet & Below - Mobile Nav Trigger Point */
+        @media (max-width: 992px) {
+            .container { padding: 0 25px; } /* Consistent padding */
+            .site-header .container {
+                /* Keep flex row for logo and button alignment */
+                flex-direction: row;
+                justify-content: space-between; /* Logo left, button right */
+                align-items: center;
+                /* position: relative;  Already set on .site-header */
+            }
+            .logo { font-size: 1.7em; }
+
+            /* --- Mobile Nav Activation --- */
+            .mobile-nav-toggle {
+                display: block; /* Show the hamburger button */
+            }
+            .main-nav {
+                display: none; /* Hide the nav container by default */
+                /* Mobile positioning/styles handled by '.site-header.nav-open .main-nav' */
+            }
+            .main-nav ul {
+                /* Removed desktop gap/flex settings here, apply in '.nav-open ul' */
+                gap: 0;
+            }
+             /* --- End Mobile Nav Activation --- */
+
+            .product-page-grid {
+                grid-template-columns: 1fr; /* Stack image and info */
+                gap: 40px;
+                padding: 40px;
+            }
+            .product-title { font-size: 2.3em; }
+            .product-price { font-size: 2em; }
+
+            .tabs-nav { overflow-x: auto; white-space: nowrap; padding-bottom: 5px; /* Add scroll for tabs if they overflow */ }
+            .tab-button { flex-shrink: 0; } /* Prevent buttons shrinking */
+
+            .footer-grid { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 40px; }
+        }
+
+        /* Mobile Landscape & Portrait */
+        @media (max-width: 767px) { /* Adjusted from 768 */
+            .container { padding: 0 20px; }
+            .site-header { padding: 20px 0; margin-bottom: 30px; }
+            .logo { font-size: 1.6em; }
+            .mobile-nav-toggle { font-size: 1.6em; }
+
+            .breadcrumbs { padding: 20px 0; font-size: 0.8em; }
+
+            .product-page-grid { padding: 30px; gap: 30px; }
+            .product-title { font-size: 2em; }
+            .product-price { font-size: 1.8em; }
+
+            .product-info { gap: 15px; } /* Reduce gap in info section */
+            .product-actions { gap: 12px; }
+            .action-button { padding: 15px 25px; font-size: 0.9em; }
+
+            .carousel-control { width: 38px; height: 38px; font-size: 14px; }
+            .carousel-control.prev { left: 15px; }
+            .carousel-control.next { right: 15px; }
+            .carousel-thumbnails { gap: 10px; grid-template-columns: repeat(auto-fill, minmax(60px, 1fr)); }
+
+            .product-details-section { padding: 35px 25px; margin-bottom: 40px; }
+            .tabs-nav { margin-bottom: 25px; }
+            .tab-button { padding: 14px 18px; font-size: 0.85em; }
+
+            .related-products-section { padding: 40px 0; margin-bottom: 40px; }
+            .related-products-section h2 { font-size: 1.8em; margin-bottom: 35px; }
+            .related-products-grid { grid-template-columns: 1fr 1fr; gap: 20px; } /* Keep 2 columns even on small screens */
+
+            .site-footer { padding: 50px 0; margin-top: 40px; }
+            .footer-grid { grid-template-columns: 1fr 1fr; gap: 30px; } /* Two columns for footer */
+            .footer-bottom { padding-top: 30px; font-size: 0.8em; }
+        }
+
+        /* Small Mobile Portrait */
+        @media (max-width: 480px) {
+            .container { padding: 0 15px; }
+            .logo { font-size: 1.4em; }
+            .mobile-nav-toggle { font-size: 1.5em; }
+
+            .product-page-grid { padding: 20px; gap: 25px; }
+            .product-title { font-size: 1.7em; }
+            .product-price { font-size: 1.6em; }
+            .product-price-wrapper { padding: 15px 0; }
+
+            .variant-label { font-size: 0.8em; }
+            .swatch { width: 30px; height: 30px; gap: 10px; }
+            .quantity-selector button, .quantity-selector input[type="number"] { height: 36px; }
+            .quantity-selector button { width: 36px; font-size: 0.9em;}
+            .quantity-selector input[type="number"] { width: 45px; font-size: 0.9em;}
+
+            .action-button { padding: 13px 20px; font-size: 0.8em; letter-spacing: 1px; }
+            .trust-info { gap: 10px 15px; font-size: 0.75em; }
+            .social-links a { width: 34px; height: 34px; font-size: 1em; }
+
+            .product-details-section { padding: 30px 15px; }
+            .tab-button { padding: 12px 12px; letter-spacing: 0.5px; font-size: 0.8em; }
+            .tab-content h3 { font-size: 1.4em; margin-bottom: 15px;}
+            .tab-content p, .tab-content ul { margin-bottom: 15px; font-size: 0.95em; line-height: 1.7; }
+            .tab-content li { padding-left: 25px; margin-bottom: 10px; }
+            .tab-content li::before { top: 4px; }
+
+            .related-products-section h2 { font-size: 1.6em; margin-bottom: 30px; }
+            .related-products-grid { gap: 15px; }
+            .related-product-card .image-container { padding: 15px; }
+            .related-product-info { padding: 15px 10px;}
+            .related-product-title { font-size: 0.95em; height: auto; margin-bottom: 8px; } /* Allow title to wrap */
+            .related-product-price { font-size: 1em; margin-bottom: 10px; }
+            .view-details-link { font-size: 0.75em; }
+
+            .footer-grid { grid-template-columns: 1fr; } /* Single column footer on smallest screens */
+            .footer-column h4 { margin-bottom: 15px; }
+            .footer-column li { margin-bottom: 10px; }
+        }
 
     </style>
     <!-- Fin CSS Intégré -->
@@ -231,7 +422,15 @@
     <header class="site-header">
         <div class="container">
             <a href="#" class="logo">Éclat Horloger</a>
-            <nav class="main-nav">
+
+            <!-- Hamburger Menu Button (Added) -->
+            <button class="mobile-nav-toggle" aria-controls="main-navigation" aria-expanded="false">
+                <span class="visually-hidden">Menu</span>
+                <i class="fas fa-bars open-icon" aria-hidden="true"></i>
+                <i class="fas fa-times close-icon" aria-hidden="true"></i>
+            </button>
+
+            <nav class="main-nav" id="main-navigation">
                 <ul>
                     <li><a href="#">Collections</a></li>
                     <li><a href="#">Hommes</a></li>
@@ -261,28 +460,27 @@
             <section class="product-media" aria-label="Galerie Média du Produit">
                 <div class="carousel">
                     <div class="carousel-slides">
-                        <!-- Slide 1: splat.html (Pointer vers le fichier par défaut) -->
+                        <!-- Slide 1: splat.html -->
                         <div class="carousel-slide active" data-type="splat" role="tabpanel" id="slide-splat">
                             <iframe id="splat-viewer"
-                                    src="splat_acier_inoxydable.html" <!-- MISE A JOUR : src initiale -->
+                                    src="splat_acier_inoxydable.html"
                                     title="Vue 3D Interactive de la Montre"
                                     frameborder="0"></iframe>
-                            <!-- Le loading indicator est toujours là -->
                             <div class="loading-indicator" aria-live="polite">Chargement Vue 3D...</div>
                         </div>
-                        <!-- Slide 2: Image Placeholder (Montre) -->
+                        <!-- Slide 2: Image Placeholder -->
                         <div class="carousel-slide" data-type="image" role="tabpanel" id="slide-1">
                             <img src="https://picsum.photos/800/800?random=1&category=timepiece" alt="Chronographe Élégance - Vue de face" loading="lazy">
                         </div>
-                        <!-- Slide 3: Image Placeholder (Détail) -->
+                        <!-- Slide 3: Image Placeholder -->
                         <div class="carousel-slide" data-type="image" role="tabpanel" id="slide-2">
                             <img src="https://picsum.photos/800/800?random=2&category=detail" alt="Chronographe Élégance - Détail cadran" loading="lazy">
                         </div>
-                        <!-- Slide 4: Image Placeholder (Porté) -->
+                        <!-- Slide 4: Image Placeholder -->
                         <div class="carousel-slide" data-type="image" role="tabpanel" id="slide-3">
                             <img src="https://picsum.photos/800/800?random=3&category=luxury" alt="Chronographe Élégance - Au poignet" loading="lazy">
                         </div>
-                        <!-- Slide 5: Image Placeholder (Boîte) -->
+                        <!-- Slide 5: Image Placeholder -->
                         <div class="carousel-slide" data-type="image" role="tabpanel" id="slide-4">
                             <img src="https://picsum.photos/800/800?random=4&category=packaging" alt="Chronographe Élégance - Écrin" loading="lazy">
                         </div>
@@ -297,7 +495,7 @@
                 </div>
             </section>
 
-            <!-- Section Infos Produit (Simplifiée et resserrée) -->
+            <!-- Section Infos Produit -->
             <section class="product-info" aria-labelledby="product-title">
                  <div class="product-vendor">Par <a href="#">Éclat Horloger</a></div>
                 <h1 id="product-title" class="product-title">Chronographe Élégance Automatique</h1>
@@ -315,7 +513,6 @@
                 </div>
 
                 <div class="product-variants">
-                    <!-- Variante Boîtier/Cadran (Couleur) SEULEMENT -->
                     <div class="variant-group">
                         <label class="variant-label" id="color-label">Finition: <span class="selected-value selected-color">Acier Inoxydable</span></label>
                         <div class="color-swatches" role="radiogroup" aria-labelledby="color-label">
@@ -325,7 +522,6 @@
                             <button class="swatch" data-value="Cadran Bleu" style="--swatch-color: #2a4a6d;" aria-label="Sélectionner Cadran Bleu" role="radio" aria-checked="false"><span class="visually-hidden">Cadran Bleu</span></button>
                         </div>
                     </div>
-                    <!-- Le bloc pour le choix du bracelet a été supprimé -->
                 </div>
 
                  <div class="product-quantity">
@@ -407,7 +603,7 @@
         </div>
     </footer>
 
-    <!-- JavaScript Intégré -->
+    <!-- JavaScript Intégré (avec ajout mobile nav) -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             // --- Logique Carrousel ---
@@ -417,76 +613,68 @@
                 const slides = slidesContainer ? Array.from(slidesContainer.querySelectorAll('.carousel-slide')) : [];
                 const prevButton = carousel.querySelector('.carousel-control.prev');
                 const nextButton = carousel.querySelector('.carousel-control.next');
-                const thumbnailsContainer = carousel.querySelector('.carousel-thumbnails');
-                const splatIframe = document.getElementById('splat-viewer'); // Référence à l'iframe
+                const thumbnailsContainer = document.querySelector('.carousel-thumbnails'); // Changed selector
+                const splatIframe = document.getElementById('splat-viewer');
                 const splatSlide = carousel.querySelector('.carousel-slide[data-type="splat"]');
-                // Récupérer l'indicateur DEPUIS le slide splat
                 const splatLoadingIndicator = splatSlide ? splatSlide.querySelector('.loading-indicator') : null;
 
                 let currentIndex = 0;
                 let thumbnails = [];
 
-                // Gestionnaire pour quand l'iframe (nouveau splat) est chargé
                 if (splatIframe) {
                     splatIframe.addEventListener('load', () => {
-                        splatIframe.classList.add('loaded'); // Ajoute la classe pour masquer via CSS
+                        splatIframe.classList.add('loaded');
                         console.log("Nouveau Splat HTML chargé:", splatIframe.src);
-                        // Masquer explicitement au cas où le CSS prend du temps
                         if (splatLoadingIndicator) {
                             splatLoadingIndicator.classList.remove('visible');
                         }
                     });
-                    // Gestionnaire d'erreur si le fichier splat n'est pas trouvé
                     splatIframe.addEventListener('error', () => {
                         console.error("Erreur: Impossible de charger", splatIframe.src);
-                        splatIframe.classList.remove('loaded'); // S'assurer qu'il n'est pas marqué comme chargé
+                        splatIframe.classList.remove('loaded');
                         if (splatLoadingIndicator) {
                             splatLoadingIndicator.textContent = "Erreur chargement 3D";
-                            splatLoadingIndicator.classList.add('visible'); // Garder visible si erreur
+                            splatLoadingIndicator.classList.add('visible');
                         }
                     });
                 }
 
-                // Créer Miniatures (inchangé)
-                 function createThumbnails() { /* ... code inchangé ... */
-                    if (!thumbnailsContainer) return;
-                    thumbnailsContainer.innerHTML = ''; thumbnails = [];
-                    slides.forEach((slide, index) => {
-                        const thumb = document.createElement('button');
-                        thumb.classList.add('thumbnail-item'); thumb.dataset.index = index;
-                        thumb.setAttribute('role', 'tab'); thumb.setAttribute('aria-controls', slide.id); thumb.setAttribute('aria-selected', index === 0 ? 'true' : 'false');
-                        const slideType = slide.dataset.type; thumb.dataset.type = slideType;
-                        if (slideType === 'splat') {
-                            thumb.innerHTML = '<span class="visually-hidden">Vue 3D</span><i class="fa-solid fa-cube"></i>';
-                            thumb.setAttribute('aria-label', 'Sélectionner Vue 3D');
-                        } else {
-                            const img = slide.querySelector('img');
-                            if (img) {
-                                const thumbImg = document.createElement('img'); let thumbSrc = img.src;
-                                if (thumbSrc.includes('picsum.photos')) { const baseUrl = thumbSrc.split('?')[0]; thumbSrc = `${baseUrl.replace('/800/800', '/100/100')}?random=thumb${index}`; }
-                                thumbImg.src = thumbSrc; thumbImg.alt = `Miniature ${index + 1}: ${img.alt || 'Image produit'}`; thumbImg.loading = 'lazy';
-                                thumb.appendChild(thumbImg); thumb.setAttribute('aria-label', `Sélectionner image ${index}`);
-                            }
-                        }
-                        thumb.addEventListener('click', () => goToSlide(index)); thumbnailsContainer.appendChild(thumb); thumbnails.push(thumb);
-                    });
+                function createThumbnails() {
+                   if (!thumbnailsContainer) return;
+                   thumbnailsContainer.innerHTML = ''; thumbnails = [];
+                   slides.forEach((slide, index) => {
+                       const thumb = document.createElement('button');
+                       thumb.classList.add('thumbnail-item'); thumb.dataset.index = index;
+                       thumb.setAttribute('role', 'tab'); thumb.setAttribute('aria-controls', slide.id); thumb.setAttribute('aria-selected', index === 0 ? 'true' : 'false');
+                       const slideType = slide.dataset.type; thumb.dataset.type = slideType;
+                       if (slideType === 'splat') {
+                           thumb.innerHTML = '<span class="visually-hidden">Vue 3D</span><i class="fa-solid fa-cube"></i>';
+                           thumb.setAttribute('aria-label', 'Sélectionner Vue 3D');
+                       } else {
+                           const img = slide.querySelector('img');
+                           if (img) {
+                               const thumbImg = document.createElement('img'); let thumbSrc = img.src;
+                               if (thumbSrc.includes('picsum.photos')) { const baseUrl = thumbSrc.split('?')[0]; thumbSrc = `${baseUrl.replace('/800/800', '/100/100')}?random=thumb${index}`; }
+                               thumbImg.src = thumbSrc; thumbImg.alt = `Miniature ${index + 1}: ${img.alt || 'Image produit'}`; thumbImg.loading = 'lazy';
+                               thumb.appendChild(thumbImg); thumb.setAttribute('aria-label', `Sélectionner image ${index}`);
+                           }
+                       }
+                       thumb.addEventListener('click', () => goToSlide(index)); thumbnailsContainer.appendChild(thumb); thumbnails.push(thumb);
+                   });
                 }
 
-                // Mettre à jour état Carrousel (inchangé)
-                function updateCarousel() { /* ... code inchangé ... */
+                function updateCarousel() {
                     slides.forEach((slide, index) => { const isActive = index === currentIndex; slide.classList.toggle('active', isActive); slide.setAttribute('aria-hidden', !isActive); });
                     thumbnails.forEach((thumb, index) => { const isActive = index === currentIndex; thumb.classList.toggle('active', isActive); thumb.setAttribute('aria-selected', isActive); thumb.setAttribute('tabindex', isActive ? '0' : '-1'); });
                     if(prevButton) prevButton.disabled = currentIndex === 0; if(nextButton) nextButton.disabled = currentIndex === slides.length - 1;
                     slides.forEach((slide, index) => { if(slide.dataset.type === 'splat') { const iframe = slide.querySelector('iframe'); if (iframe?.contentWindow) { try { const message = index === currentIndex ? 'play' : 'pause'; /* iframe.contentWindow.postMessage(message, '*'); */ } catch (e) {} } } });
                 }
 
-                // Aller à la slide (inchangé)
                 function goToSlide(index) { if (index < 0 || index >= slides.length) return; currentIndex = index; updateCarousel(); }
                 if(prevButton) prevButton.addEventListener('click', () => goToSlide(currentIndex - 1));
                 if(nextButton) nextButton.addEventListener('click', () => goToSlide(currentIndex + 1));
 
-                // Nav clavier miniatures (inchangé)
-                thumbnailsContainer?.addEventListener('keydown', (e) => { /* ... code inchangé ... */
+                thumbnailsContainer?.addEventListener('keydown', (e) => {
                     let newIndex = currentIndex;
                     if (['ArrowRight', 'ArrowDown'].includes(e.key)) { newIndex = (currentIndex + 1) % slides.length; }
                     else if (['ArrowLeft', 'ArrowUp'].includes(e.key)) { newIndex = (currentIndex - 1 + slides.length) % slides.length; }
@@ -495,8 +683,7 @@
                     e.preventDefault(); goToSlide(newIndex); thumbnails[newIndex].focus();
                 });
 
-                // Initialisation Carrousel (inchangé)
-                if (slides.length > 0) { slides.forEach((slide, index) => slide.id = `slide-${slide.dataset.type === 'splat' ? 'splat' : index}`); createThumbnails(); updateCarousel(); }
+                if (slides.length > 0) { slides.forEach((slide, index) => slide.id = `slide-${slide.dataset.type === 'splat' ? 'splat' : index+1}`); createThumbnails(); updateCarousel(); } // Corrected slide id generation slightly
                 else { if(carousel) carousel.style.display = 'none'; }
             } // Fin if (carousel)
 
@@ -508,49 +695,36 @@
             }
 
 
-            // --- Logique Sélection Variantes (MODIFIÉE pour splat dynamique) ---
+            // --- Logique Sélection Variantes ---
             function setupVariantSelection(containerSelector, itemSelector, selectedDisplaySelector, attributeName) {
                 const container = document.querySelector(containerSelector);
                 const display = document.querySelector(selectedDisplaySelector);
-                if (!container) return; // Ne pas bloquer si un sélecteur n'existe pas
+                if (!container) return;
                 const items = container.querySelectorAll(itemSelector);
 
                 items.forEach(item => {
                     item.addEventListener('click', () => {
-                        // 1. Vérifier si déjà actif
-                        if (item.classList.contains('active')) {
-                            return; // Ne rien faire si on clique sur l'élément déjà actif
-                        }
-
-                        // 2. Mettre à jour l'UI (commun à toutes les variantes)
+                        if (item.classList.contains('active')) return;
                         items.forEach(i => { i.classList.remove('active'); i.setAttribute('aria-checked', 'false'); });
                         item.classList.add('active'); item.setAttribute('aria-checked', 'true');
                         const selectedValue = item.dataset.value;
-                        if (display) display.textContent = selectedValue; // Mettre à jour le texte si le span existe
+                        if (display) display.textContent = selectedValue;
                         console.log(`${attributeName} sélectionné:`, selectedValue);
 
-                        // 3. Logique spécifique pour les pastilles de couleur (swatch)
                         if (item.classList.contains('swatch')) {
                             const splatIframe = document.getElementById('splat-viewer');
-                             // Récupérer l'indicateur DANS le scope où on en a besoin
-                             const splatLoadingIndicator = splatIframe?.closest('.carousel-slide[data-type="splat"]')?.querySelector('.loading-indicator');
+                            const splatLoadingIndicator = splatIframe?.closest('.carousel-slide[data-type="splat"]')?.querySelector('.loading-indicator');
 
                             if (splatIframe && selectedValue) {
                                 const newFilenamePart = formatColorToFilename(selectedValue);
                                 const newSplatSrc = `splat_${newFilenamePart}.html`;
-
-                                // Vérifier si la source va réellement changer
                                 if (splatIframe.getAttribute('src') !== newSplatSrc) {
                                     console.log("Changement du splat vers:", newSplatSrc);
-
-                                    // Afficher le loader AVANT de changer la source
-                                    splatIframe.classList.remove('loaded'); // Retirer 'loaded' pour le CSS
+                                    splatIframe.classList.remove('loaded');
                                     if (splatLoadingIndicator) {
-                                        splatLoadingIndicator.textContent = "Chargement Vue 3D..."; // Reset text
-                                        splatLoadingIndicator.classList.add('visible'); // Rendre visible
+                                        splatLoadingIndicator.textContent = "Chargement Vue 3D...";
+                                        splatLoadingIndicator.classList.add('visible');
                                     }
-
-                                    // Changer la source de l'iframe pour charger le nouveau fichier
                                     splatIframe.setAttribute('src', newSplatSrc);
                                 }
                             }
@@ -558,12 +732,11 @@
                     });
                 });
             }
-            // Appel seulement pour la couleur
             setupVariantSelection('.color-swatches', '.swatch', '.selected-color', 'Finition');
 
-            // --- Logique Sélecteur Quantité (Identique) ---
+            // --- Logique Sélecteur Quantité ---
             const quantityInput = document.getElementById('quantity'); const downButton = document.querySelector('.quantity-down'); const upButton = document.querySelector('.quantity-up');
-            if (quantityInput && downButton && upButton) { /* ... code quantité inchangé ... */
+            if (quantityInput && downButton && upButton) {
                 const min = parseInt(quantityInput.min, 10); const max = parseInt(quantityInput.max, 10);
                 const updateQtyButtons = () => { const val = parseInt(quantityInput.value, 10); downButton.disabled = val <= min; upButton.disabled = val >= max; };
                 downButton.addEventListener('click', () => { let val = parseInt(quantityInput.value, 10); if (val > min) quantityInput.value = val - 1; updateQtyButtons(); });
@@ -572,9 +745,9 @@
                 updateQtyButtons();
              }
 
-            // --- Logique Onglets (Identique) ---
+            // --- Logique Onglets ---
             const tabButtons = document.querySelectorAll('.tab-button'); const tabContents = document.querySelectorAll('.tab-content');
-            tabButtons.forEach(button => { /* ... code onglets inchangé ... */
+            tabButtons.forEach(button => {
                 button.addEventListener('click', () => {
                     tabButtons.forEach(btn => { btn.classList.remove('active'); btn.setAttribute('aria-selected', 'false'); btn.setAttribute('tabindex', '-1'); });
                     tabContents.forEach(content => { content.classList.remove('active'); content.setAttribute('aria-hidden', 'true'); });
@@ -585,7 +758,7 @@
                 if (!button.classList.contains('active')) button.setAttribute('tabindex', '-1');
             });
             const tabsNav = document.querySelector('.tabs-nav');
-            if (tabsNav) { /* ... code nav clavier onglets inchangé ... */
+            if (tabsNav) {
                  tabsNav.addEventListener('keydown', (e) => {
                     const currentTab = document.activeElement; if (!currentTab?.matches('.tab-button')) return;
                     let currentIndex = Array.from(tabButtons).indexOf(currentTab), newIndex = currentIndex;
@@ -594,6 +767,27 @@
                     e.preventDefault(); tabButtons[newIndex].focus();
                  });
             }
+
+            // --- !! NOUVEAU : Logique Menu Mobile !! ---
+            const mobileNavToggle = document.querySelector('.mobile-nav-toggle');
+            const siteHeader = document.querySelector('.site-header');
+            const mainNav = document.getElementById('main-navigation'); // Use ID added in HTML
+
+            if (mobileNavToggle && siteHeader && mainNav) {
+                mobileNavToggle.addEventListener('click', () => {
+                    const isExpanded = mobileNavToggle.getAttribute('aria-expanded') === 'true';
+                    mobileNavToggle.setAttribute('aria-expanded', !isExpanded);
+                    siteHeader.classList.toggle('nav-open');
+
+                    // Optional: Add logic here to trap focus or handle clicks outside
+                });
+
+                // Ensure aria-controls is set (redundant if hardcoded in HTML but safe)
+                 if(!mobileNavToggle.hasAttribute('aria-controls')) {
+                     mobileNavToggle.setAttribute('aria-controls', 'main-navigation');
+                 }
+            }
+            // --- Fin Logique Menu Mobile ---
 
         }); // Fin DOMContentLoaded
     </script>
