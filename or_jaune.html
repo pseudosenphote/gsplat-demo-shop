@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Local Splat Viewer</title>
+
+    <style>
+        /* Styles remain the same - body bg is cosmetic, canvas bg is set by renderer */
+        body, html { margin: 0; padding: 0; overflow: hidden; background-color: #222; /* A neutral html bg */ width: 100%; height: 100%; position: fixed; font-family: sans-serif; }
+        canvas { display: block; width: 100vw; height: 100vh; cursor: grab; }
+        canvas:active { cursor: grabbing; }
+        #progress-container { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 10; width: 80%; max-width: 25em; }
+        dialog { width: 100%; text-align: center; max-width: 20em; color: white; background-color: rgba(0,0,0,0.8); border: 1px solid #555; border-radius: 5px; padding: 1.5em; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5); }
+        dialog p { margin: 0 0 1em 0; font-size: 1.1em; }
+        progress { width: 100%; height: 1em; border: none; color: #eee; appearance: none; -webkit-appearance: none; -moz-appearance: none; border-radius: 3px; }
+        progress::-webkit-progress-bar { background-color: #333; border-radius: 3px; }
+        progress::-webkit-progress-value { background-color: #eee; border-radius: 3px; transition: width 0.1s ease; }
+        progress::-moz-progress-bar { background-color: #eee; border-radius: 3px; transition: width 0.1s ease; }
+    </style>
+</head>
+
+<body>
+    <div id="progress-container">
+        <dialog open id="progress-dialog">
+            <p>
+                <label for="progress-indicator">Loading scene...</label>
+            </p>
+            <progress max="100" id="progress-indicator" value="0"></progress>
+        </dialog>
+    </div>
+
+    <canvas id="canvas"></canvas>
+
+    <script type="module">
+        import * as SPLAT from "https://cdn.jsdelivr.net/npm/gsplat@latest";
+        console.log("gsplat library loaded:", SPLAT);
+
+        // --- RENDERER CONFIGURATION ---
+        const rendererConfig = {
+            // Background color for the WebGL canvas (Hex format)
+            backgroundColorHex: "#CCCCCC", // Default: Black
+            // Background alpha (0.0 = transparent, 1.0 = opaque)
+            backgroundAlpha: 1.0
+        };
+        // --- END OF RENDERER CONFIGURATION ---
+
+
+        // --- INITIAL CAMERA CONFIGURATION ---
+        const initialCameraConfig = {
+            position: { x: 1.403, y: -0.709, z:0.053 }, // Example: Side view
+            target:   { x: 0, y: -0.2, z: 0 }
+        };
+        // --- END OF INITIAL CAMERA CONFIGURATION ---
+
+
+        // --- ORBIT CONTROLS CONFIGURATION ---
+        const orbitControlsConfig = {
+            orbitSpeed: 1.0, zoomSpeed: 1.0, panSpeed: 1.0,
+            minZoom: 0.1, maxZoom: 10.0,
+            minAngle: -90, maxAngle: 90,
+            dampening: 0.12
+        };
+        // --- END OF ORBIT CONTROLS CONFIGURATION ---
+
+
+        // Helper function to convert Hex color to RGBA (0-255 range)
+        function hexToRgbaInt(hex, alpha = 1.0) {
+            hex = hex.replace('#', '');
+            // Pad short hex codes (e.g., #F00 -> #FF0000)
+            if (hex.length === 3) {
+                hex = hex[0] + hex[0] + hex[1] + hex[1] + hex[2] + hex[2];
+            }
+            if (hex.length !== 6) {
+                console.error("Invalid hex color format:", hex);
+                return { r: 0, g: 0, b: 0, a: 255 }; // Return black on error
+            }
+            try {
+                const bigint = parseInt(hex, 16);
+                const r = (bigint >> 16) & 255;
+                const g = (bigint >> 8) & 255;
+                const b = bigint & 255;
+                // Convert alpha (0.0-1.0) to 0-255 integer range
+                const aInt = Math.max(0, Math.min(255, Math.round(alpha * 255)));
+                return { r, g, b, a: aInt };
+            } catch (e) {
+                 console.error("Error parsing hex color:", hex, e);
+                 return { r: 0, g: 0, b: 0, a: 255 }; // Return black on error
+            }
+        }
+
+
+        const canvas = document.getElementById("canvas");
+        const progressDialog = document.getElementById("progress-dialog");
+        const progressIndicator = document.getElementById("progress-indicator");
+        const progressContainer = document.getElementById("progress-container");
+
+        if (!canvas || !progressDialog || !progressIndicator || !progressContainer) {
+            console.error("Required HTML elements not found!");
+            alert("Initialization failed: Missing required HTML elements.");
+        } else {
+            try {
+                const renderer = new SPLAT.WebGLRenderer(canvas);
+                console.log("Renderer created:", renderer);
+
+                // --- Set Renderer Background Color ---
+                try {
+                    const bgColorRgba = hexToRgbaInt(
+                        rendererConfig.backgroundColorHex,
+                        rendererConfig.backgroundAlpha
+                    );
+
+                    // Assuming the property is 'backgroundColor' and accepts Color32
+                    if ('backgroundColor' in renderer && SPLAT.Color32) {
+                        renderer.backgroundColor = new SPLAT.Color32(
+                            bgColorRgba.r,
+                            bgColorRgba.g,
+                            bgColorRgba.b,
+                            bgColorRgba.a
+                        );
+                        console.log(`Set renderer.backgroundColor = Color32(${bgColorRgba.r}, ${bgColorRgba.g}, ${bgColorRgba.b}, ${bgColorRgba.a})`);
+                    } else {
+                        // Fallback or alternative check if needed (e.g., renderer.setClearColor)
+                        console.warn("Renderer 'backgroundColor' property or SPLAT.Color32 not found. Background might not be set.");
+                        // You might need to check the exact API if 'backgroundColor' isn't correct.
+                        // Example alternative (syntax may vary):
+                        // if ('setClearColor' in renderer) {
+                        //    renderer.setClearColor(bgColorRgba.r / 255, bgColorRgba.g / 255, bgColorRgba.b / 255, bgColorRgba.a / 255); // Assuming 0-1 range
+                        // }
+                    }
+                } catch (e) {
+                    console.error("Error setting background color on renderer:", e);
+                }
+                // --- End Set Background Color ---
+
+
+                const scene = new SPLAT.Scene();
+                const camera = new SPLAT.Camera();
+                console.log("Camera object created:", camera);
+
+                const controls = new SPLAT.OrbitControls(camera, canvas);
+                console.log("OrbitControls object created:", controls);
+
+                // Apply OrbitControls Configuration
+                console.log("Applying OrbitControls configuration:");
+                for (const key in orbitControlsConfig) {
+                    if (key in controls) {
+                         try { controls[key] = orbitControlsConfig[key]; console.log(`  Set controls.${key} = ${orbitControlsConfig[key]}`); }
+                         catch (e) { console.warn(`  Could not set controls.${key}:`, e.message); }
+                    } else { console.warn(`  Property '${key}' (from config) not found on gsplat.js OrbitControls.`); }
+                }
+
+                async function main() {
+                    const url = "splat.splat";
+
+                    try {
+                        await SPLAT.Loader.LoadAsync(url, scene, (progress) => {
+                            progressIndicator.value = progress * 100;
+                        });
+                        console.log("Splat file loaded successfully.");
+
+                        // Set initial camera view from Configuration
+                        console.log("Setting initial camera view from config.");
+                        if (initialCameraConfig.position) {
+                            camera.position = new SPLAT.Vector3(initialCameraConfig.position.x, initialCameraConfig.position.y, initialCameraConfig.position.z);
+                            console.log("  Set initial camera position:", camera.position);
+                        } else {
+                             camera.position = new SPLAT.Vector3(0, 1, 5); console.log("  Using default initial camera position.");
+                        }
+                        console.log("  Skipping manual camera.rotation set; OrbitControls will orient camera to target.");
+                        if (initialCameraConfig.target) {
+                             controls.setCameraTarget(new SPLAT.Vector3(initialCameraConfig.target.x, initialCameraConfig.target.y, initialCameraConfig.target.z));
+                             console.log("  Set initial controls target:", initialCameraConfig.target);
+                        } else {
+                            controls.setCameraTarget(new SPLAT.Vector3(0, 0, 0)); console.log("  Using default initial controls target (origin).");
+                        }
+                        controls.update();
+                        console.log("  Called controls.update() to finalize initial view.");
+
+                        // Hide Progress
+                        progressDialog.style.opacity = '0';
+                        progressDialog.addEventListener('transitionend', () => { progressContainer.style.display = 'none'; progressDialog.close(); }, { once: true });
+                        progressDialog.style.transition = 'opacity 0.5s ease';
+
+                    } catch (error) {
+                        console.error("Error loading splat file:", error);
+                        progressDialog.innerHTML = `<p style="color: red; font-weight: bold;">Error Loading Scene</p><p style="color: #ccc;">${error.message}</p><p style="color: #aaa;">Check file and server.</p>`;
+                       progressContainer.style.display = 'block'; progressDialog.style.opacity = '1'; return;
+                    }
+
+                    // Resize Handling
+                    const handleResize = () => {
+                        const dpr = window.devicePixelRatio || 1;
+                        const newWidth = Math.floor(canvas.clientWidth * dpr);
+                        const newHeight = Math.floor(canvas.clientHeight * dpr);
+                        renderer.setSize(newWidth, newHeight);
+                        if (camera) { camera.aspect = canvas.clientWidth / canvas.clientHeight; }
+                    };
+
+                    // Render Loop
+                    let rafId = null;
+                    const frame = () => {
+                        controls.update();
+                        renderer.render(scene, camera);
+                        rafId = requestAnimationFrame(frame);
+                    };
+
+                    // Initial Setup & Start
+                    handleResize();
+                    window.addEventListener("resize", handleResize);
+                    if (rafId) cancelAnimationFrame(rafId);
+                    console.log("Starting render loop...");
+                    rafId = requestAnimationFrame(frame);
+                }
+
+                 main().catch(err => {
+                     console.error("Error during main execution:", err);
+                     progressDialog.innerHTML = `<p style="color: red;">Runtime Error</p><p style="color: #ccc;">${err.message}</p>`;
+                     progressContainer.style.display = 'block'; progressDialog.style.opacity = '1'; if (!progressDialog.open) progressDialog.showModal();
+                 });
+
+            } catch (initError) {
+                 console.error("Error during initial setup:", initError);
+                 alert(`Initialization failed: ${initError.message}`);
+                 progressDialog.innerHTML = `<p style="color: red;">Initialization Error</p><p style="color: #ccc;">${initError.message}</p>`;
+                 progressContainer.style.display = 'block'; progressDialog.style.opacity = '1'; if (!progressDialog.open) progressDialog.showModal();
+            }
+        }
+    </script>
+</body>
+</html>
