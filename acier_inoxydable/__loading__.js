@@ -4,7 +4,16 @@ pc.script.createLoadingScreen(function (app) {
     var currentPercentage = 0;
     var targetPercentage = 0;
     var progressIntervalId = null;
-    var MAX_DISPLAY_PERCENTAGE_BEFORE_END = 99; // Define the fake ceiling
+
+    // --- Configuration for the "crawl" phase ---
+    var crawlThreshold = 75; // Start crawling slowly after reaching this percentage
+    var crawlTarget = 99;    // Crawl towards this number (stops just before 100)
+    var crawlIntervalCounter = 0;
+    // Adjust crawl speed: lower number = faster crawl, higher number = slower crawl
+    // This means it will increment the percentage roughly every (crawlSpeed * intervalTime) milliseconds
+    // e.g., 15 * 30ms = 450ms per percentage point increase during crawl
+    var crawlSpeed = 15;
+    // --- End Configuration ---
 
     var showSplash = function () {
         // --- CSS (Keep the CSS from the previous version) ---
@@ -19,8 +28,7 @@ pc.script.createLoadingScreen(function (app) {
             '    justify-content: center; align-items: center; z-index: 1000;',
             '}',
             '#loading-spinner {',
-            '    width: 50px; height: 50px;',
-            '    border: 5px solid rgba(255, 255, 255, 0.2);',
+            '    width: 50px; height: 50px; border: 5px solid rgba(255, 255, 255, 0.2);',
             '    border-top-color: #ffffff; border-radius: 50%;',
             '    animation: spin 1s linear infinite; margin-bottom: 15px;',
             '}',
@@ -58,8 +66,9 @@ pc.script.createLoadingScreen(function (app) {
         // --- Start the animation interval ---
         currentPercentage = 0;
         targetPercentage = 0;
+        crawlIntervalCounter = 0; // Reset crawl counter
         if (progressIntervalId) { clearInterval(progressIntervalId); }
-        progressIntervalId = setInterval(updateProgressDisplay, 30); // Adjust speed if needed
+        progressIntervalId = setInterval(updateProgressDisplay, 30); // Update ~33 times/sec
 
         // --- Store hide function ---
         hideSplash = function () {
@@ -67,63 +76,68 @@ pc.script.createLoadingScreen(function (app) {
                 clearInterval(progressIntervalId);
                 progressIntervalId = null;
             }
-
             var wrapperElement = document.getElementById('loading-wrapper');
-            if (wrapperElement?.parentElement) { // Optional chaining
+            if (wrapperElement && wrapperElement.parentElement) {
                 wrapperElement.parentElement.removeChild(wrapperElement);
             }
-            // Remove style
-            var styleElement = null;
-            var headStyles = document.head.querySelectorAll('style[type="text/css"]');
-            for (var i = 0; i < headStyles.length; i++) {
-                if (headStyles[i].textContent.includes('#loading-wrapper') && headStyles[i].textContent.includes('@keyframes spin')) {
-                    styleElement = headStyles[i];
-                    break;
-                }
-            }
-            if (styleElement?.parentElement) { // Optional chaining
-                document.head.removeChild(styleElement);
+             var styleElement = null;
+             var headStyles = document.head.querySelectorAll('style[type="text/css"]');
+             for (var i = 0; i < headStyles.length; i++) {
+                 if (headStyles[i].textContent.includes('#loading-wrapper') && headStyles[i].textContent.includes('@keyframes spin')) {
+                     styleElement = headStyles[i];
+                     break;
+                 }
+             }
+            if(styleElement && styleElement.parentElement) {
+                 document.head.removeChild(styleElement);
             }
             progressTextElement = null;
         };
     };
 
-    // --- Progress Update Function --- (MODIFIED with mapping)
-    var setProgress = function (value) { // value is 0.0 to 1.0
-        var actualProgress = value;
-        var mappedTarget;
-
-        // Map the 0.0 - 0.75 range to 0 - 99% display range
-        if (actualProgress < 0.75) {
-            // Calculate the proportion through the 0-75% range
-            var proportion = actualProgress / 0.75;
-            // Scale this proportion to the 0-99% display range
-            mappedTarget = Math.floor(proportion * MAX_DISPLAY_PERCENTAGE_BEFORE_END);
-        } else {
-            // If actual progress is 75% or more, clamp display to 99%
-            mappedTarget = MAX_DISPLAY_PERCENTAGE_BEFORE_END;
+    // --- Progress Update Function ---
+    var setProgress = function (value) {
+        targetPercentage = Math.floor(value * 100);
+        // Clamp target percentage to prevent it exceeding 100 during potential crawl phase
+        if (targetPercentage > 100) {
+            targetPercentage = 100;
         }
-
-        // Update the target, the interval will animate towards it
-        targetPercentage = mappedTarget;
+        // Don't let the target drop below the current display if we are crawling
+        if (currentPercentage > targetPercentage && currentPercentage >= crawlThreshold) {
+             // Keep the target at least where the crawl has reached,
+             // unless a real progress event pushes it higher later.
+             targetPercentage = currentPercentage;
+        }
     };
 
-    // --- Animation Interval Callback --- (No changes needed here)
+    // --- Animation Interval Callback --- (MODIFIED)
     var updateProgressDisplay = function() {
         if (!progressTextElement) return;
 
+        // Always try to reach the target percentage first
         if (currentPercentage < targetPercentage) {
             currentPercentage++;
             progressTextElement.textContent = currentPercentage + '%';
-        } else if (currentPercentage > targetPercentage) {
-            // Handle potential decrease (though unlikely for loading)
-            currentPercentage = targetPercentage;
-            progressTextElement.textContent = currentPercentage + '%';
+            crawlIntervalCounter = 0; // Reset crawl counter when real progress happens
         }
-        // Prevent exceeding the fake max before the 'start' event
-        if (currentPercentage > MAX_DISPLAY_PERCENTAGE_BEFORE_END) {
-             currentPercentage = MAX_DISPLAY_PERCENTAGE_BEFORE_END;
-             progressTextElement.textContent = currentPercentage + '%';
+        // If we've reached the target, AND the target is high enough, AND we're not yet at the crawl limit...
+        else if (currentPercentage === targetPercentage && currentPercentage >= crawlThreshold && currentPercentage < crawlTarget) {
+            // Start or continue the slow crawl
+            crawlIntervalCounter++;
+            if (crawlIntervalCounter >= crawlSpeed) {
+                currentPercentage++; // Increment slowly
+                progressTextElement.textContent = currentPercentage + '%';
+                crawlIntervalCounter = 0; // Reset counter for the next crawl increment
+            }
+        } else {
+             // If we are below threshold, or already at/above crawlTarget, reset crawl counter
+             crawlIntervalCounter = 0;
+        }
+
+        // Safety clamp: Ensure display never exceeds 100 (might happen briefly before start event)
+        if (currentPercentage > 100) {
+            currentPercentage = 100;
+            progressTextElement.textContent = '100%';
         }
     };
 
@@ -132,31 +146,23 @@ pc.script.createLoadingScreen(function (app) {
 
     // --- Event listeners ---
     app.on('preload:end', function () {
-        // When actual preloading ends, ensure the target is set to 99%
-        // (in case the last progress event was < 0.75)
-        setProgress(1.0); // This will set targetPercentage to 99 via our mapping
+        // Preload is done, set target to 100%.
+        // The interval will quickly count up any remaining difference,
+        // or finish the crawl if it was active.
+        setProgress(1);
     });
 
-    app.on('preload:progress', setProgress); // Calls the modified setProgress
+    app.on('preload:progress', setProgress);
 
     app.on('start', function () {
-        // App is ready to start, force display to 100% just before hiding
+        // Force 100% display right before hiding, regardless of interval state.
         if (progressTextElement) {
-             // Stop the interval first
-             if (progressIntervalId) {
-                clearInterval(progressIntervalId);
-                progressIntervalId = null;
-             }
-             // Force the display
              currentPercentage = 100;
              progressTextElement.textContent = '100%';
         }
-
-        // Short delay to potentially make 100% visible (optional, adjust/remove if needed)
-        // setTimeout(function() {
-            if (hideSplash) {
-                hideSplash(); // Hide splash (also cleans up interval again just in case)
-            }
-        // }, 50); // 50ms delay
+        // Hide splash
+        if (hideSplash) {
+            hideSplash();
+        }
     });
 });
