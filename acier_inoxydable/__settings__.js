@@ -8,7 +8,7 @@ window.CONTEXT_OPTIONS = {
     'deviceTypes': [`webgl2`, `webgl1`],
     'powerPreference': "high-performance"
 };
-window.SCRIPTS = [ 220621386, 220625492 ];
+window.SCRIPTS = [ 220625492, 220621386 ];
 window.CONFIG_FILENAME = "config.json";
 window.INPUT_SETTINGS = {
     useKeyboard: true,
