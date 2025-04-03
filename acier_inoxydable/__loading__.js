@@ -1,45 +1,78 @@
 pc.script.createLoadingScreen(function (app) {
     var hideSplash;
-    var progressTextElement;
+    var progressTextElement = null;
     var currentPercentage = 0;
     var targetPercentage = 0;
     var progressIntervalId = null;
+    var accelerationThreshold = 75;
+    var accelerationTarget = 99;
+    var accelerationDuration = 4000;
+    var isAcceleratingFinish = false;
+    var accelerationStartTime = 0;
+    var accelerationStartPercent = 0;
+    var fadeOutDuration = 500;
 
-    // --- Configuration for the "crawl" phase ---
-    var crawlThreshold = 75; // Start crawling slowly after reaching this percentage
-    var crawlTarget = 99;    // Crawl towards this number (stops just before 100)
-    var crawlIntervalCounter = 0;
-    // Adjust crawl speed: lower number = faster crawl, higher number = slower crawl
-    // This means it will increment the percentage roughly every (crawlSpeed * intervalTime) milliseconds
-    // e.g., 15 * 30ms = 450ms per percentage point increase during crawl
-    var crawlSpeed = 15;
-    // --- End Configuration ---
+    // Browser Detection
+    var ua = navigator.userAgent.toLowerCase();
+    var isSafari = ua.includes('safari') && !ua.includes('chrome') && !ua.includes('chromium');
+
+    // --- Define New Colors --- (NEW)
+    var backgroundColor = '#e6e6e6'; // Light grey background
+    var spinnerBaseColor = 'rgba(0, 0, 0, 0.1)'; // Subtle dark base for spinner
+    var spinnerActiveColor = '#333333'; // Dark grey for active spinner part
+    var textColor = '#333333'; // Dark grey for text
 
     var showSplash = function () {
-        // --- CSS (Keep the CSS from the previous version) ---
+        // --- CSS (Updated Colors) ---
         var css = [
             'body {',
-            '    margin: 0; background-color: #283538;',
+            '    margin: 0;',
+            '    background-color: ' + backgroundColor + ';', // MODIFIED
             '    font-family: "Helvetica Neue", Arial, sans-serif;',
             '}',
+            '',
             '#loading-wrapper {',
             '    position: absolute; top: 0; left: 0; height: 100%; width: 100%;',
-            '    background-color: #283538; display: flex; flex-direction: column;',
+            '    background-color: ' + backgroundColor + ';', // MODIFIED
+            '    display: flex; flex-direction: column;',
             '    justify-content: center; align-items: center; z-index: 1000;',
+            '    opacity: 1;',
+            '    transition: opacity ' + (fadeOutDuration / 1000) + 's ease-out;',
+            '    pointer-events: auto;',
             '}',
+            '',
+            '#loading-wrapper.fade-out {',
+            '    opacity: 0;',
+            '    pointer-events: none;',
+            '}',
+            '',
             '#loading-spinner {',
-            '    width: 50px; height: 50px; border: 5px solid rgba(255, 255, 255, 0.2);',
-            '    border-top-color: #ffffff; border-radius: 50%;',
-            '    animation: spin 1s linear infinite; margin-bottom: 15px;',
+            '    width: 50px; height: 50px;',
+            '    border: 5px solid ' + spinnerBaseColor + ';', // MODIFIED
+            '    border-top-color: ' + spinnerActiveColor + ';', // MODIFIED
+            '    border-radius: 50%;',
+            '    animation: spin 1s linear infinite;',
+             // Conditionally add margin-bottom only if text will be shown
+             (isSafari ? 'margin-bottom: 15px;' : ''),
             '}',
-            '#progress-text {',
-            '    color: rgba(255, 255, 255, 0.8); font-size: 16px;',
+            '',
+            '#progress-text {', // This rule only applies if the element exists
+            '    color: ' + textColor + ';', // MODIFIED
+            '    font-size: 16px;',
             '    font-weight: bold; text-align: center; min-width: 40px;',
             '}',
+            '',
             '@keyframes spin { to { transform: rotate(360deg); } }',
+            '',
             '@media (max-width: 480px) {',
-            '    #loading-spinner { width: 40px; height: 40px; border-width: 4px; margin-bottom: 12px; }',
-            '    #progress-text { font-size: 14px; }',
+            '    #loading-spinner {',
+            '        width: 40px; height: 40px; border-width: 4px;',
+                 // Conditionally adjust margin for smaller screens too
+                 (isSafari ? 'margin-bottom: 12px;' : ''),
+            '    }',
+            '    #progress-text {', // Only applies if element exists
+            '        font-size: 14px;',
+            '    }',
             '}'
         ].join('\n');
 
@@ -58,24 +91,28 @@ pc.script.createLoadingScreen(function (app) {
         spinner.id = 'loading-spinner';
         wrapper.appendChild(spinner);
 
-        progressTextElement = document.createElement('div');
-        progressTextElement.id = 'progress-text';
-        progressTextElement.textContent = '0%';
-        wrapper.appendChild(progressTextElement);
+        // --- Conditionally create progress text ---
+        if (isSafari) {
+            progressTextElement = document.createElement('div');
+            progressTextElement.id = 'progress-text';
+            progressTextElement.textContent = '0%';
+            wrapper.appendChild(progressTextElement);
+        } else {
+            progressTextElement = null;
+        }
 
-        // --- Start the animation interval ---
+        // --- Reset state and start interval ---
         currentPercentage = 0;
         targetPercentage = 0;
-        crawlIntervalCounter = 0; // Reset crawl counter
-        if (progressIntervalId) { clearInterval(progressIntervalId); }
-        progressIntervalId = setInterval(updateProgressDisplay, 30); // Update ~33 times/sec
+        isAcceleratingFinish = false;
+        accelerationStartTime = 0;
+        accelerationStartPercent = 0;
 
-        // --- Store hide function ---
-        hideSplash = function () {
-            if (progressIntervalId) {
-                clearInterval(progressIntervalId);
-                progressIntervalId = null;
-            }
+        if (progressIntervalId) { clearInterval(progressIntervalId); }
+        progressIntervalId = setInterval(updateProgressDisplay, 20);
+
+        // --- Internal function to remove elements after fade ---
+        var removeElementsAfterFade = function() {
             var wrapperElement = document.getElementById('loading-wrapper');
             if (wrapperElement && wrapperElement.parentElement) {
                 wrapperElement.parentElement.removeChild(wrapperElement);
@@ -83,7 +120,7 @@ pc.script.createLoadingScreen(function (app) {
              var styleElement = null;
              var headStyles = document.head.querySelectorAll('style[type="text/css"]');
              for (var i = 0; i < headStyles.length; i++) {
-                 if (headStyles[i].textContent.includes('#loading-wrapper') && headStyles[i].textContent.includes('@keyframes spin')) {
+                 if (headStyles[i].textContent.includes('#loading-wrapper.fade-out')) {
                      styleElement = headStyles[i];
                      break;
                  }
@@ -92,75 +129,80 @@ pc.script.createLoadingScreen(function (app) {
                  document.head.removeChild(styleElement);
             }
             progressTextElement = null;
+            isAcceleratingFinish = false;
+        };
+
+        // --- Store hide function ---
+        hideSplash = function () {
+            if (progressIntervalId) {
+                clearInterval(progressIntervalId);
+                progressIntervalId = null;
+            }
+
+            var wrapperElement = document.getElementById('loading-wrapper');
+            if (wrapperElement) {
+                wrapperElement.classList.add('fade-out');
+                setTimeout(removeElementsAfterFade, fadeOutDuration);
+            } else {
+                removeElementsAfterFade();
+            }
         };
     };
 
-    // --- Progress Update Function ---
+    // --- Progress Update Function --- (Unchanged logic)
     var setProgress = function (value) {
-        targetPercentage = Math.floor(value * 100);
-        // Clamp target percentage to prevent it exceeding 100 during potential crawl phase
-        if (targetPercentage > 100) {
-            targetPercentage = 100;
-        }
-        // Don't let the target drop below the current display if we are crawling
-        if (currentPercentage > targetPercentage && currentPercentage >= crawlThreshold) {
-             // Keep the target at least where the crawl has reached,
-             // unless a real progress event pushes it higher later.
-             targetPercentage = currentPercentage;
+        var newTargetPercentage = Math.floor(value * 100);
+        targetPercentage = newTargetPercentage;
+
+        if (!isAcceleratingFinish && newTargetPercentage >= accelerationThreshold) {
+            isAcceleratingFinish = true;
+            accelerationStartTime = Date.now();
+            accelerationStartPercent = currentPercentage;
         }
     };
 
-    // --- Animation Interval Callback --- (MODIFIED)
+    // --- Animation Interval Callback --- (Unchanged logic)
     var updateProgressDisplay = function() {
-        if (!progressTextElement) return;
+        var nextPercentage = currentPercentage;
 
-        // Always try to reach the target percentage first
-        if (currentPercentage < targetPercentage) {
-            currentPercentage++;
-            progressTextElement.textContent = currentPercentage + '%';
-            crawlIntervalCounter = 0; // Reset crawl counter when real progress happens
-        }
-        // If we've reached the target, AND the target is high enough, AND we're not yet at the crawl limit...
-        else if (currentPercentage === targetPercentage && currentPercentage >= crawlThreshold && currentPercentage < crawlTarget) {
-            // Start or continue the slow crawl
-            crawlIntervalCounter++;
-            if (crawlIntervalCounter >= crawlSpeed) {
-                currentPercentage++; // Increment slowly
-                progressTextElement.textContent = currentPercentage + '%';
-                crawlIntervalCounter = 0; // Reset counter for the next crawl increment
-            }
+        if (isAcceleratingFinish) {
+            var elapsed = Date.now() - accelerationStartTime;
+            var progressRatio = Math.min(elapsed / accelerationDuration, 1.0);
+            nextPercentage = Math.floor(accelerationStartPercent + (accelerationTarget - accelerationStartPercent) * progressRatio);
+            nextPercentage = Math.min(nextPercentage, accelerationTarget);
         } else {
-             // If we are below threshold, or already at/above crawlTarget, reset crawl counter
-             crawlIntervalCounter = 0;
+            if (currentPercentage < targetPercentage) {
+                nextPercentage = currentPercentage + 1;
+            }
+            nextPercentage = Math.min(nextPercentage, targetPercentage);
         }
 
-        // Safety clamp: Ensure display never exceeds 100 (might happen briefly before start event)
-        if (currentPercentage > 100) {
-            currentPercentage = 100;
-            progressTextElement.textContent = '100%';
+        if (nextPercentage !== currentPercentage) {
+             currentPercentage = nextPercentage;
+             if (progressTextElement) { // Update display only if element exists (Safari)
+                 progressTextElement.textContent = currentPercentage + '%';
+             }
         }
     };
+
 
     // --- Script execution ---
     showSplash();
 
     // --- Event listeners ---
     app.on('preload:end', function () {
-        // Preload is done, set target to 100%.
-        // The interval will quickly count up any remaining difference,
-        // or finish the crawl if it was active.
         setProgress(1);
     });
 
     app.on('preload:progress', setProgress);
 
     app.on('start', function () {
-        // Force 100% display right before hiding, regardless of interval state.
-        if (progressTextElement) {
-             currentPercentage = 100;
+        // --- Final Update and Trigger Hide ---
+        currentPercentage = 100;
+        if (progressTextElement) { // Update display only if element exists (Safari)
              progressTextElement.textContent = '100%';
         }
-        // Hide splash
+
         if (hideSplash) {
             hideSplash();
         }
